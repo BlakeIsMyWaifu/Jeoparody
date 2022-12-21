@@ -3,12 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "run-p dev:* open-browser",
+    "dev:next": "next dev",
+    "dev:wss": "cross-env NODE_ENV=development tsx watch src/server/trpc/wsServer.ts",
     "build": "next build",
-    "dev": "next dev",
+    "start": "yarn run open-browser && next start",
     "lint": "next lint",
-    "start": "next start"
+    "open-browser": "start http://localhost:3000",
+    "eslint": "eslint ./src --fix"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/server": "^11.10.0",
+    "@mantine/core": "^5.9.5",
+    "@mantine/hooks": "^5.9.5",
+    "@mantine/next": "^5.9.5",
     "@tanstack/react-query": "^4.16.0",
     "@trpc/client": "^10.0.0",
     "@trpc/next": "^10.0.0",
@@ -18,19 +27,24 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "1.9.1",
-    "zod": "^3.18.0"
+    "ws": "^8.11.0",
+    "zod": "^3.18.0",
+    "zustand": "^4.1.5"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
+    "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.26.0",
     "eslint-config-next": "13.0.2",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "npm-run-all": "^4.1.5",
+    "tsx": "^3.12.1",
     "typescript": "^4.8.4"
-  },
-  "ct3aMetadata": {
-    "initVersion": "6.11.4"
   }
 }
