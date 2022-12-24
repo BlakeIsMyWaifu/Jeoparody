@@ -3,12 +3,15 @@ import { type CreateNextContextOptions } from '@trpc/server/adapters/next'
 import { type NodeHTTPCreateContextFnOptions } from '@trpc/server/dist/adapters/node-http'
 import { type IncomingMessage } from 'http'
 import type ws from 'ws'
+import { roomStore } from './state/roomStore'
 
 type CreateContextOptions = Record<string, never>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const createContextInner = async (_opts: CreateContextOptions) => {
-	return {}
+	return {
+		roomStore
+	}
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
