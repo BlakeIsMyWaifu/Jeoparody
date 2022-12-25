@@ -1,15 +1,15 @@
 import { Group, Container, Stack, Button, Text } from '@mantine/core'
-import { useState, type FC, type ReactNode } from 'react'
+import { useBuzzerData } from 'hooks/useBuzzerData'
+import { usePlayerData } from 'hooks/usePlayerData'
+import { type FC, type ReactNode } from 'react'
 import { usePlayerStore } from 'state/playerStore'
 import { trpc } from 'utils/trpc'
 
 const Buzzers: FC = () => {
 
-	const [players, setPlayers] = useState<Record<string, number>>({})
-	trpc.players.onUpdatePlayers.useSubscription(undefined, { onData: setPlayers })
-	trpc.players.getPlayers.useQuery(undefined, { onSuccess: setPlayers })
+	const players = usePlayerData()
 
-	const playerName = usePlayerStore(state => state.playerName)
+	const ownPlayerName = usePlayerStore(state => state.playerName)
 
 	return (
 		<Group position='center' style={{
@@ -17,7 +17,7 @@ const Buzzers: FC = () => {
 		}}>
 			{
 				Object.entries(players).map(([name, points]) => {
-					return playerName === name
+					return ownPlayerName === name
 						? <PlayerSelfBuzzer
 							key={name}
 							playerName={name}
@@ -41,10 +41,14 @@ interface BuzzerProps {
 }
 
 const Buzzer: FC<BuzzerProps> = ({ playerName, points, children }) => {
+
+	const [firstBuzzed, ...otherBuzzes] = useBuzzerData()
+
 	return (
 		<Container style={{
 			border: 'white 2px solid',
-			height: '100%'
+			height: '100%',
+			backgroundColor: firstBuzzed === playerName ? 'green' : (otherBuzzes.includes(playerName) ? 'yellow' : undefined)
 		}}>
 			<Stack justify='space-between'>
 				<Text>{playerName}</Text>
@@ -61,9 +65,14 @@ interface PlayerBuzzerProps {
 }
 
 const PlayerSelfBuzzer: FC<PlayerBuzzerProps> = ({ playerName, points }) => {
+
+	const buzzer = trpc.buzzer.buzz.useMutation()
+
 	return (
 		<Buzzer playerName={playerName} points={points}>
-			<Button>Buzz</Button>
+			<Button onClick={() => {
+				buzzer.mutate(playerName)
+			}}>Buzz</Button>
 		</Buzzer>
 	)
 }

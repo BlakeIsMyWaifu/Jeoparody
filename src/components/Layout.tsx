@@ -15,8 +15,8 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 			left: '0',
 			display: 'grid',
 			gridTemplateRows: '1fr 320px',
-			gridTemplateColumns: '1fr',
-			gridTemplateAreas: '"board" "buzzers"'
+			gridTemplateColumns: '1fr 200px',
+			gridTemplateAreas: '"board board" "buzzers buzzOrder"'
 		}}>
 			{children}
 		</Box>
