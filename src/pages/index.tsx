@@ -1,30 +1,16 @@
 import { type NextPage } from 'next'
-import { Button, Modal, Title, useMantineTheme, Text, Stack, Group, TextInput } from '@mantine/core'
+import { Button, Modal, Title, useMantineTheme, Stack, Group, TextInput } from '@mantine/core'
 import { useHostStore } from 'state/hostStore'
-import Host from 'components/Host'
-import { useState, type FC } from 'react'
-import Player from 'components/Player'
+import { useState } from 'react'
 import { trpc } from 'utils/trpc'
 import { usePlayerStore } from 'state/playerStore'
+import { useRouter } from 'next/router'
 
-const Home: NextPage = () => {
-
-	const hostActive = useHostStore(state => state.isHost)
-	const playerActive = usePlayerStore(state => state.isPlayer)
-
-	return (
-		<>
-			<LobbyModal />
-			{(hostActive && !playerActive) && <Host />}
-			{(playerActive && !hostActive) && <Player />}
-			{(hostActive && playerActive) && <Text color='red'>Error: Both host and player have active states</Text>}
-		</>
-	)
-}
-
-const LobbyModal: FC = () => {
+const HomePage: NextPage = () => {
 
 	const theme = useMantineTheme()
+
+	const router = useRouter()
 
 	// Player
 	const playerActive = usePlayerStore(state => state.isPlayer)
@@ -37,6 +23,7 @@ const LobbyModal: FC = () => {
 		onSuccess: ([success, message]) => {
 			if (success) {
 				setPlayer(message)
+				router.push('/play')
 			} else {
 				setPlayerNameInputDisabledMessage(message)
 			}
@@ -51,6 +38,7 @@ const LobbyModal: FC = () => {
 		onSuccess: data => {
 			if (!data) return
 			becomeHost()
+			router.push('/host')
 		}
 	})
 
@@ -86,4 +74,4 @@ const LobbyModal: FC = () => {
 	) : null
 }
 
-export default Home
+export default HomePage
