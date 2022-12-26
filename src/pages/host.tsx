@@ -1,10 +1,17 @@
+import Board from 'components/Board'
+import Buzzers from 'components/Buzzers'
+import BuzzOrder from 'components/BuzzOrder'
+import HostControls from 'components/HostControls/HostControls'
 import Layout from 'components/Layout'
 import { type NextPage } from 'next'
 
 const HostPage: NextPage = () => {
 	return (
-		<Layout>
-			{ }
+		<Layout mode='host'>
+			<Board />
+			<HostControls />
+			<Buzzers />
+			<BuzzOrder />
 		</Layout>
 	)
 }

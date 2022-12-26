@@ -8,8 +8,7 @@ const BuzzOrder: FC = () => {
 
 	return (
 		<Box style={{
-			gridArea: 'buzzOrder',
-			border: 'white 2px solid'
+			gridArea: 'buzzOrder'
 		}}>
 			<Stack>
 				{

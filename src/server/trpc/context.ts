@@ -3,6 +3,7 @@ import { type CreateNextContextOptions } from '@trpc/server/adapters/next'
 import { type NodeHTTPCreateContextFnOptions } from '@trpc/server/dist/adapters/node-http'
 import { type IncomingMessage } from 'http'
 import type ws from 'ws'
+import { boardStore } from './state/boardStore'
 import { buzzerStore } from './state/buzzerStore'
 import { roomStore } from './state/roomStore'
 
@@ -12,7 +13,8 @@ type CreateContextOptions = Record<string, never>;
 export const createContextInner = async (_opts: CreateContextOptions) => {
 	return {
 		roomStore,
-		buzzerStore
+		buzzerStore,
+		boardStore
 	}
 }
 
