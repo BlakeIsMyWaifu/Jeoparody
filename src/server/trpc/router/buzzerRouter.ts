@@ -22,5 +22,9 @@ export const buzzerRouter = router({
 		.input(z.string())
 		.mutation(({ ctx, input }) => {
 			ctx.buzzerStore.getState().buzz(input)
+		}),
+	getBuzzes: publicProcedure
+		.query(({ ctx }) => {
+			return ctx.buzzerStore.getState().buzzes
 		})
 })

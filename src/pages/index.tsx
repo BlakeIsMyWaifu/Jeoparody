@@ -1,9 +1,9 @@
 import { type NextPage } from 'next'
 import { Button, Modal, Title, useMantineTheme, Stack, Group, TextInput } from '@mantine/core'
-import { useHostStore } from 'state/hostStore'
+import { useHostStore } from 'state/hostClientStore'
 import { useState } from 'react'
 import { trpc } from 'utils/trpc'
-import { usePlayerStore } from 'state/playerStore'
+import { usePlayerStore } from 'state/playerClientStore'
 import { useRouter } from 'next/router'
 
 const HomePage: NextPage = () => {

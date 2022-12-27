@@ -3,3 +3,5 @@ const createActionName = (storeName: string) => (actionName: string): [false, st
 export const hostActionName = createActionName('host')
 
 export const playerActionName = createActionName('player')
+
+export const boardActionName = createActionName('board')

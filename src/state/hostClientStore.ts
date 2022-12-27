@@ -16,9 +16,9 @@ export const useHostStore = create<HostStore>()(devtools(set => ({
 	activeQuestionAnswer: null,
 
 	becomeHost: () => {
-		set({ isHost: true }, ...hostActionName('setIsHost'))
+		set({ isHost: true }, ...hostActionName('becomeHost'))
 	},
 	setActiveQuestionAnswer: answer => {
-		set({ activeQuestionAnswer: answer })
+		set({ activeQuestionAnswer: answer }, ...hostActionName('setActiveQuestionAnswer'))
 	}
 }), { name: 'Host' }))

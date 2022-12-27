@@ -1,11 +1,10 @@
-import { useState } from 'react'
+import { usePlayerStore } from 'state/playerClientStore'
 import { trpc } from 'utils/trpc'
 
-export const useBuzzerData = (): string[] => {
+export const useBuzzerData = (): void => {
 
-	const [buzzes, setBuzzes] = useState<string[]>([])
+	const setBuzzes = usePlayerStore(state => state.setBuzzes)
 
 	trpc.buzzer.onBuzz.useSubscription(undefined, { onData: setBuzzes })
-
-	return buzzes
+	trpc.buzzer.getBuzzes.useQuery(undefined, { onSuccess: setBuzzes })
 }

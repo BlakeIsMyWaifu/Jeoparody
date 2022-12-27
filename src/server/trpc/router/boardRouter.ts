@@ -1,7 +1,7 @@
 import { observable } from '@trpc/server/observable'
 import { z } from 'zod'
 
-import type { Square } from '../state/boardStore'
+import { type Square } from '../state/boardServerStore'
 import { publicProcedure, router } from '../trpc'
 import { eventEmitter } from './_app'
 

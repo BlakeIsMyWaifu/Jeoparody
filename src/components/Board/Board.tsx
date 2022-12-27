@@ -1,8 +1,7 @@
 import { Box, Center, createStyles, Group, Stack, Text, Title } from '@mantine/core'
-import { useBoardData } from 'hooks/useBoardData'
-import { useQuestionPlayerData } from 'hooks/useQuestionPlayerData'
 import { type FC } from 'react'
-import { useHostStore } from 'state/hostStore'
+import { useBoardStore } from 'state/boardClientStore'
+import { useHostStore } from 'state/hostClientStore'
 import { trpc } from 'utils/trpc'
 import Question from './Question'
 
@@ -34,9 +33,9 @@ const Board: FC = () => {
 
 	const { classes } = useStyles({})
 
-	const board = useBoardData()
+	const board = useBoardStore(state => state.board)
 
-	const question = useQuestionPlayerData()
+	const question = useBoardStore(state => state.question)
 
 	return (
 		<Box className={classes.container}>

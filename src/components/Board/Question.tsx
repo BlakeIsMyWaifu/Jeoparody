@@ -1,14 +1,14 @@
 import { Button, Paper, Stack, Text } from '@mantine/core'
 import { type FC } from 'react'
-import { useHostStore } from 'state/hostStore'
-import { useQuestionStore } from 'state/questionStore'
+import { useHostStore } from 'state/hostClientStore'
+import { useBoardStore } from 'state/boardClientStore'
 import { trpc } from 'utils/trpc'
 
 const Question: FC = () => {
 
 	const isHost = useHostStore(state => state.isHost)
 
-	const question = useQuestionStore(state => state.question)
+	const question = useBoardStore(state => state.question)
 
 	return (
 		<Paper style={{

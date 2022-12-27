@@ -1,12 +1,10 @@
-import { useState } from 'react'
+import { usePlayerStore } from 'state/playerClientStore'
 import { trpc } from 'utils/trpc'
 
-export const usePlayerData = (): Record<string, number> => {
+export const usePlayerData = (): void => {
 
-	const [players, setPlayers] = useState<Record<string, number>>({})
+	const setPlayers = usePlayerStore(state => state.setPlayers)
 
 	trpc.players.onUpdatePlayers.useSubscription(undefined, { onData: setPlayers })
 	trpc.players.getPlayers.useQuery(undefined, { onSuccess: setPlayers })
-
-	return players
 }

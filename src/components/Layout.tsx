@@ -1,4 +1,5 @@
 import { Box } from '@mantine/core'
+import { useAllData } from 'hooks/useAllData'
 import { type FC, type ReactNode } from 'react'
 
 interface LayoutProps {
@@ -7,6 +8,9 @@ interface LayoutProps {
 }
 
 const Layout: FC<LayoutProps> = ({ mode, children }) => {
+
+	useAllData()
+
 	return (
 		<Box style={{
 			position: 'absolute',

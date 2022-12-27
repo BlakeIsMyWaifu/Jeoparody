@@ -1,13 +1,11 @@
 import { Group, Container, Stack, Button, Text } from '@mantine/core'
-import { useBuzzerData } from 'hooks/useBuzzerData'
-import { usePlayerData } from 'hooks/usePlayerData'
 import { type FC, type ReactNode } from 'react'
-import { usePlayerStore } from 'state/playerStore'
+import { usePlayerStore } from 'state/playerClientStore'
 import { trpc } from 'utils/trpc'
 
 const Buzzers: FC = () => {
 
-	const players = usePlayerData()
+	const players = usePlayerStore(state => state.players)
 
 	const ownPlayerName = usePlayerStore(state => state.playerName)
 
@@ -42,7 +40,7 @@ interface BuzzerProps {
 
 const Buzzer: FC<BuzzerProps> = ({ playerName, points, children }) => {
 
-	const [firstBuzzed, ...otherBuzzes] = useBuzzerData()
+	const [firstBuzzed, ...otherBuzzes] = usePlayerStore(state => state.buzzes)
 
 	return (
 		<Container style={{

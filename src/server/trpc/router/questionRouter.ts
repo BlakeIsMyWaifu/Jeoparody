@@ -1,7 +1,7 @@
 import { observable } from '@trpc/server/observable'
 import { z } from 'zod'
 
-import type { QuestionSafe } from '../state/boardStore'
+import { type QuestionSafe } from '../state/boardServerStore'
 import { publicProcedure, router } from '../trpc'
 import { eventEmitter } from './_app'
 
@@ -35,6 +35,14 @@ export const questionRouter = router({
 					eventEmitter.off('selectQuestion', onSelectQuestion)
 				}
 			})
+		}),
+	getQuestion: publicProcedure
+		.query(({ ctx }) => {
+			const { activeQuestion } = ctx.boardStore.getState()
+			return activeQuestion ? {
+				question: activeQuestion.question,
+				image: activeQuestion.image
+			} : null
 		}),
 	endQuestion: publicProcedure
 		.mutation(({ ctx }) => {

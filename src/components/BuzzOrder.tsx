@@ -1,10 +1,10 @@
 import { Box, Stack, Text } from '@mantine/core'
-import { useBuzzerData } from 'hooks/useBuzzerData'
 import { type FC } from 'react'
+import { usePlayerStore } from 'state/playerClientStore'
 
 const BuzzOrder: FC = () => {
 
-	const buzzes = useBuzzerData()
+	const buzzes = usePlayerStore(state => state.buzzes)
 
 	return (
 		<Box style={{

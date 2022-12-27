@@ -3,9 +3,9 @@ import { type CreateNextContextOptions } from '@trpc/server/adapters/next'
 import { type NodeHTTPCreateContextFnOptions } from '@trpc/server/dist/adapters/node-http'
 import { type IncomingMessage } from 'http'
 import type ws from 'ws'
-import { boardStore } from './state/boardStore'
-import { buzzerStore } from './state/buzzerStore'
-import { roomStore } from './state/roomStore'
+import { boardStore } from './state/boardServerStore'
+import { buzzerStore } from './state/buzzerServerStore'
+import { roomStore } from './state/roomServerStore'
 
 type CreateContextOptions = Record<string, never>;
 
