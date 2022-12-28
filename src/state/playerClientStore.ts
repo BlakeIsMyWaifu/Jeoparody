@@ -8,17 +8,20 @@ interface PlayerStore {
 	playerName: string;
 	players: Record<string, number>;
 	buzzes: string[];
+	activeBuzzers: boolean;
 
 	setPlayer: (name: string) => void;
 	setPlayers: (players: Record<string, number>) => void;
 	setBuzzes: (buzzes: string[]) => void;
+	setActiveBuzzers: (buzzerState: boolean) => void;
 }
 
 export const usePlayerStore = create<PlayerStore>()(devtools(set => ({
 	isPlayer: false,
 	playerName: '',
-	buzzes: [],
 	players: {},
+	buzzes: [],
+	activeBuzzers: false,
 
 	setPlayer: name => {
 		set({
@@ -31,5 +34,8 @@ export const usePlayerStore = create<PlayerStore>()(devtools(set => ({
 	},
 	setBuzzes: buzzes => {
 		set({ buzzes }, ...playerActionName('setBuzzes'))
+	},
+	setActiveBuzzers: buzzerState => {
+		set({ activeBuzzers: buzzerState }, ...playerActionName('setActiveBuzzers'))
 	}
 }), { name: 'Player' }))

@@ -7,4 +7,9 @@ export const useBuzzerData = (): void => {
 
 	trpc.buzzer.onBuzz.useSubscription(undefined, { onData: setBuzzes })
 	trpc.buzzer.getBuzzes.useQuery(undefined, { onSuccess: setBuzzes })
+
+	const setActiveBuzzers = usePlayerStore(state => state.setActiveBuzzers)
+
+	trpc.buzzer.onUpdateActiveBuzzers.useSubscription(undefined, { onData: setActiveBuzzers })
+	trpc.buzzer.getActiveBuzzers.useQuery(undefined, { onSuccess: setActiveBuzzers })
 }

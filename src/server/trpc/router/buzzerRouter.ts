@@ -5,6 +5,11 @@ import { publicProcedure, router } from '../trpc'
 import { eventEmitter } from './_app'
 
 export const buzzerRouter = router({
+	buzz: publicProcedure
+		.input(z.string())
+		.mutation(({ ctx, input }) => {
+			ctx.buzzerStore.getState().buzz(input)
+		}),
 	onBuzz: publicProcedure
 		.subscription(({ ctx }) => {
 			return observable<string[]>(emit => {
@@ -18,13 +23,30 @@ export const buzzerRouter = router({
 				}
 			})
 		}),
-	buzz: publicProcedure
-		.input(z.string())
-		.mutation(({ ctx, input }) => {
-			ctx.buzzerStore.getState().buzz(input)
-		}),
 	getBuzzes: publicProcedure
 		.query(({ ctx }) => {
 			return ctx.buzzerStore.getState().buzzes
+		}),
+
+	activateBuzzers: publicProcedure
+		.mutation(({ ctx }) => {
+			ctx.buzzerStore.getState().activateBuzzers()
+		}),
+	onUpdateActiveBuzzers: publicProcedure
+		.subscription(({ ctx }) => {
+			return observable<boolean>(emit => {
+				const onUpdateActiveBuzzers = (): void => {
+					const { active } = ctx.buzzerStore.getState()
+					emit.next(active)
+				}
+				eventEmitter.on('updateActiveBuzzers', onUpdateActiveBuzzers)
+				return () => {
+					eventEmitter.off('updateActiveBuzzers', onUpdateActiveBuzzers)
+				}
+			})
+		}),
+	getActiveBuzzers: publicProcedure
+		.query(({ ctx }) => {
+			return ctx.buzzerStore.getState().active
 		})
 })

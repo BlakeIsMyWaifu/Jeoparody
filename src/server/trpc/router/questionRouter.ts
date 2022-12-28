@@ -47,5 +47,6 @@ export const questionRouter = router({
 	endQuestion: publicProcedure
 		.mutation(({ ctx }) => {
 			ctx.boardStore.getState().endQuestion()
+			ctx.buzzerStore.getState().resetBuzzers()
 		})
 })

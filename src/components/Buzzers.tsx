@@ -66,9 +66,11 @@ const PlayerSelfBuzzer: FC<PlayerBuzzerProps> = ({ playerName, points }) => {
 
 	const buzzer = trpc.buzzer.buzz.useMutation()
 
+	const active = usePlayerStore(state => state.activeBuzzers)
+
 	return (
 		<Buzzer playerName={playerName} points={points}>
-			<Button onClick={() => {
+			<Button disabled={!active} onClick={() => {
 				buzzer.mutate(playerName)
 			}}>Buzz</Button>
 		</Buzzer>

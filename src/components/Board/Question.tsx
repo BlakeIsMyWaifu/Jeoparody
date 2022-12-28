@@ -30,11 +30,18 @@ const HostQuestion: FC = () => {
 
 	const answer = useHostStore(state => state.activeQuestionAnswer)
 
+	const activateBuzzers = trpc.buzzer.activateBuzzers.useMutation()
+
 	const endQuestion = trpc.question.endQuestion.useMutation()
 
 	return (
 		<>
 			<Text>{answer}</Text>
+			<Button onClick={() => {
+				activateBuzzers.mutate()
+			}}>
+				Activate Buzzers
+			</Button>
 			<Button onClick={() => {
 				endQuestion.mutate()
 			}}>End Question</Button>
