@@ -1,14 +1,18 @@
 import { Box, useMantineTheme } from '@mantine/core'
 import { useAllData } from 'hooks/useAllData'
-import { type FC, type ReactNode } from 'react'
+import { type FC } from 'react'
+import { useHostStore } from 'state/hostClientStore'
+import Board from './Board/Board'
+import Buzzers from './Buzzers'
+import BuzzOrder from './BuzzOrder'
+import HostControls from './HostControls/HostControls'
+import HostStatus from './HostStatus'
 
-interface LayoutProps {
-	children: ReactNode;
-}
-
-const Layout: FC<LayoutProps> = ({ children }) => {
+const Layout: FC = () => {
 
 	const theme = useMantineTheme()
+
+	const isHost = useHostStore(state => state.isHost)
 
 	useAllData()
 
@@ -27,7 +31,10 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 			padding: '16px',
 			backgroundColor: theme.colors.dark[8]
 		}}>
-			{children}
+			<Board />
+			<Buzzers />
+			<BuzzOrder />
+			{isHost ? <HostControls /> : <HostStatus />}
 		</Box>
 	)
 }

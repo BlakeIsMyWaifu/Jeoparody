@@ -1,15 +1,26 @@
 import { type NextPage } from 'next'
 import { Button, Modal, Title, Stack, TextInput, Divider, useMantineTheme, ActionIcon, Group, Text } from '@mantine/core'
 import { useHostStore } from 'state/hostClientStore'
-import { useState, type FC } from 'react'
+import { type Dispatch, type SetStateAction, useState, type FC } from 'react'
 import { trpc } from 'utils/trpc'
 import { usePlayerStore } from 'state/playerClientStore'
-import { useRouter } from 'next/router'
 import { useInputState } from '@mantine/hooks'
 import { IconArrowRight } from '@tabler/icons'
 import { usePlayerData } from 'hooks/usePlayerData'
+import Layout from 'components/Layout'
 
 const HomePage: NextPage = () => {
+
+	const [inGame, setInGame] = useState(false)
+
+	return inGame ? <Layout /> : <HomeModal setInGame={setInGame} />
+}
+
+interface SetInGame {
+	setInGame: Dispatch<SetStateAction<boolean>>;
+}
+
+const HomeModal: FC<SetInGame> = ({ setInGame }) => {
 	return (
 		<Modal
 			centered
@@ -19,9 +30,9 @@ const HomePage: NextPage = () => {
 		>
 			<Stack spacing='xl'>
 				<Title align='center'>Jeoparody</Title>
-				<Online/>
-				<Player />
-				<Host />
+				<Online />
+				<Player setInGame={setInGame} />
+				<Host setInGame={setInGame} />
 			</Stack>
 		</Modal>
 	)
@@ -48,9 +59,7 @@ const Online: FC = () => {
 	)
 }
 
-const Player: FC = () => {
-
-	const router = useRouter()
+const Player: FC<SetInGame> = ({ setInGame }) => {
 
 	const theme = useMantineTheme()
 
@@ -63,7 +72,7 @@ const Player: FC = () => {
 		onSuccess: ([success, message]) => {
 			if (success) {
 				setPlayer(message)
-				router.push('/play')
+				setInGame(true)
 			} else {
 				setPlayerNameInputDisabledMessage(message)
 			}
@@ -114,9 +123,7 @@ const Player: FC = () => {
 	)
 }
 
-const Host: FC = () => {
-
-	const router = useRouter()
+const Host: FC<SetInGame> = ({ setInGame }) => {
 
 	const becomeHost = useHostStore(state => state.becomeHost)
 
@@ -124,7 +131,7 @@ const Host: FC = () => {
 		onSuccess: data => {
 			if (!data) return
 			becomeHost()
-			router.push('/host')
+			setInGame(true)
 		}
 	})
 
