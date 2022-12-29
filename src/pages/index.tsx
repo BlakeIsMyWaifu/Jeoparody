@@ -13,7 +13,6 @@ const HomePage: NextPage = () => {
 	return (
 		<Modal
 			centered
-			overflow='inside'
 			withCloseButton={false}
 			opened={true}
 			onClose={() => undefined}
