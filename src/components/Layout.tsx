@@ -19,8 +19,8 @@ const Layout: FC<LayoutProps> = ({ mode, children }) => {
 			top: '0',
 			left: '0',
 			display: 'grid',
-			gridTemplateRows: '1fr 320px',
-			gridTemplateColumns: '200px 1fr 200px',
+			gridTemplateRows: '1fr 200px',
+			gridTemplateColumns: '180px 1fr 180px',
 			gridTemplateAreas: `"board board board" "${mode === 'player' ? 'buzzer' : 'hostControls'} buzzers buzzOrder"`,
 			gap: '16px',
 			padding: '16px'
