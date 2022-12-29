@@ -1,12 +1,10 @@
 import { Divider, Paper, Stack, Text } from '@mantine/core'
-import { useState, type FC } from 'react'
-import { trpc } from 'utils/trpc'
+import { type FC } from 'react'
+import { useHostStore } from 'state/hostClientStore'
 
 const HostStatus: FC = () => {
 
-	const [hasHost, setHasHost] = useState(false)
-	trpc.room.onHostJoined.useSubscription(undefined, { onData: setHasHost })
-	trpc.room.getHasHost.useQuery(undefined, { onSuccess: setHasHost })
+	const hasHost = useHostStore(state => state.hasHost)
 
 	return (
 		<Paper p='xs' style={{

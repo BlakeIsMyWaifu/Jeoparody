@@ -6,10 +6,12 @@ import { trpc } from 'utils/trpc'
 import { usePlayerStore } from 'state/playerClientStore'
 import { useInputState } from '@mantine/hooks'
 import { IconArrowRight } from '@tabler/icons'
-import { usePlayerData } from 'hooks/usePlayerData'
 import Layout from 'components/Layout'
+import { useAllData } from 'hooks/useAllData'
 
 const HomePage: NextPage = () => {
+
+	useAllData()
 
 	const [inGame, setInGame] = useState(false)
 
@@ -40,11 +42,8 @@ const HomeModal: FC<SetInGame> = ({ setInGame }) => {
 
 const Online: FC = () => {
 
-	const [hasHost, setHasHost] = useState(false)
-	trpc.room.onHostJoined.useSubscription(undefined, { onData: setHasHost })
-	trpc.room.getHasHost.useQuery(undefined, { onSuccess: setHasHost })
+	const hasHost = useHostStore(state => state.hasHost)
 
-	usePlayerData()
 	const players = usePlayerStore(state => state.players)
 
 	return (

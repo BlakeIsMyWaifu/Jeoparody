@@ -1,5 +1,4 @@
 import { Box, useMantineTheme } from '@mantine/core'
-import { useAllData } from 'hooks/useAllData'
 import { type FC } from 'react'
 import { useHostStore } from 'state/hostClientStore'
 import Board from './Board/Board'
@@ -13,8 +12,6 @@ const Layout: FC = () => {
 	const theme = useMantineTheme()
 
 	const isHost = useHostStore(state => state.isHost)
-
-	useAllData()
 
 	return (
 		<Box style={{
