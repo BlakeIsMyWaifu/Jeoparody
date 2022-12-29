@@ -3,11 +3,10 @@ import { useAllData } from 'hooks/useAllData'
 import { type FC, type ReactNode } from 'react'
 
 interface LayoutProps {
-	mode: 'player' | 'host';
 	children: ReactNode;
 }
 
-const Layout: FC<LayoutProps> = ({ mode, children }) => {
+const Layout: FC<LayoutProps> = ({ children }) => {
 
 	const theme = useMantineTheme()
 
@@ -23,7 +22,7 @@ const Layout: FC<LayoutProps> = ({ mode, children }) => {
 			display: 'grid',
 			gridTemplateRows: '1fr 200px',
 			gridTemplateColumns: '180px 1fr 180px',
-			gridTemplateAreas: `"board board board" "${mode === 'player' ? 'buzzer' : 'hostControls'} buzzers buzzOrder"`,
+			gridTemplateAreas: '"board board board" "hostControls buzzers buzzOrder"',
 			gap: '16px',
 			padding: '16px',
 			backgroundColor: theme.colors.dark[8]

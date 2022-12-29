@@ -7,7 +7,7 @@ import { type NextPage } from 'next'
 
 const HostPage: NextPage = () => {
 	return (
-		<Layout mode='host'>
+		<Layout>
 			<Board />
 			<HostControls />
 			<Buzzers />

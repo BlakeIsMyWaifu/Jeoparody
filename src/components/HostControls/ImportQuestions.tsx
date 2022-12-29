@@ -20,9 +20,11 @@ const ImportQuestions: FC = () => {
 
 	return (
 		<>
-			<Button onClick={() => {
+			<Button fullWidth onClick={() => {
 				fileInputRef.current?.click()
-			}}>Import Questions</Button>
+			}}>
+				Import Questions
+			</Button>
 
 			<input
 				hidden
