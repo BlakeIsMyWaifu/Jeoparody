@@ -1,4 +1,4 @@
-import { Box, Center, createStyles, Group, Stack, Text, Title } from '@mantine/core'
+import { Box, Center, createStyles, Group, Paper, Stack, Text, Title } from '@mantine/core'
 import { type FC } from 'react'
 import { useBoardStore } from 'state/boardClientStore'
 import { useHostStore } from 'state/hostClientStore'
@@ -10,20 +10,19 @@ interface UseStyleProps {
 	inactive?: boolean;
 }
 
-const useStyles = createStyles((_theme, { hover, inactive }: UseStyleProps) => ({
+const useStyles = createStyles((theme, { hover, inactive }: UseStyleProps) => ({
 	container: {
 		gridArea: 'board',
 		position: 'relative'
 	},
-	board: {
+	maxHeight: {
 		height: '100%'
 	},
 	square: {
-		border: 'white 2px solid',
 		height: '100%',
 		visibility: inactive ? 'hidden' : 'visible',
 		'&:hover': hover && {
-			backgroundColor: 'gray',
+			backgroundColor: theme.colors.dark[5],
 			cursor: 'pointer'
 		}
 	}
@@ -39,31 +38,35 @@ const Board: FC = () => {
 
 	return (
 		<Box className={classes.container}>
-			<Group
-				grow
-				position='apart'
-				className={classes.board}
-			>
-				{
-					Object.entries(board).map(([category, squares]) => {
-						return <Stack key={category} style={{
-							height: '100%'
-						}}>
-							<CategorySquare category={category} />
-							{
-								squares.map((active, i) => {
-									return <QuestionSquare
-										key={i}
-										category={category}
-										index={i}
-										active={active}
-									/>
-								})
-							}
-						</Stack>
-					})
-				}
-			</Group>
+			{
+				Object.keys(board).length
+					? <Group
+						grow
+						position='apart'
+						className={classes.maxHeight}
+					>
+						{
+							Object.entries(board).map(([category, squares]) => {
+								return <Stack key={category} style={{
+									height: '100%'
+								}}>
+									<CategorySquare category={category} />
+									{
+										squares.map((active, i) => {
+											return <QuestionSquare
+												key={i}
+												category={category}
+												index={i}
+												active={active}
+											/>
+										})
+									}
+								</Stack>
+							})
+						}
+					</Group>
+					: <EmptyBoard />
+			}
 			{question && <Question />}
 		</Box>
 	)
@@ -78,9 +81,11 @@ const CategorySquare: FC<CategorySquareProps> = ({ category }) => {
 	const { classes } = useStyles({})
 
 	return (
-		<Center className={classes.square}>
-			<Title order={2} align='center'>{category}</Title>
-		</Center>
+		<Paper className={classes.square}>
+			<Center className={classes.maxHeight}>
+				<Title order={2} align='center'>{category}</Title>
+			</Center>
+		</Paper>
 	)
 }
 
@@ -103,12 +108,27 @@ const QuestionSquare: FC<QuestionSquareProps> = ({ category, index, active }) =>
 	})
 
 	return (
-		<Center className={classes.square} onClick={() => {
+		<Paper className={classes.square} onClick={() => {
 			if (!isHost || !active) return
 			selectQuestion.mutate({ category, index })
 		}}>
-			<Text size='xl'>£{(index + 1) * 200}</Text>
-		</Center>
+			<Center className={classes.maxHeight}>
+				<Text size='xl'>£{(index + 1) * 200}</Text>
+			</Center>
+		</Paper>
+	)
+}
+
+const EmptyBoard: FC = () => {
+
+	const { classes } = useStyles({})
+
+	return (
+		<Paper className={classes.maxHeight}>
+			<Center className={classes.maxHeight}>
+				<Title order={2}>Waiting for host to import a question board . . .</Title>
+			</Center>
+		</Paper>
 	)
 }
 
