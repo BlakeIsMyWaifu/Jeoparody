@@ -8,6 +8,7 @@ export interface RoomStore {
 
 	addPlayer: (name: string) => void;
 	setHost: (hasHost: boolean) => void;
+	adjustPoints: (player: string, amount: number) => void;
 }
 
 export const roomStore = create<RoomStore>()(set => ({
@@ -19,6 +20,14 @@ export const roomStore = create<RoomStore>()(set => ({
 	},
 	setHost: hasHost => {
 		set({ host: hasHost })
+	},
+	adjustPoints: (player, amount) => {
+		set(state => ({
+			players: {
+				...state.players,
+				[player]: state.players[player] + amount
+			}
+		}))
 	}
 }))
 

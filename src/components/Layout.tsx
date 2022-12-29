@@ -1,4 +1,4 @@
-import { Box } from '@mantine/core'
+import { Box, useMantineTheme } from '@mantine/core'
 import { useAllData } from 'hooks/useAllData'
 import { type FC, type ReactNode } from 'react'
 
@@ -8,6 +8,8 @@ interface LayoutProps {
 }
 
 const Layout: FC<LayoutProps> = ({ mode, children }) => {
+
+	const theme = useMantineTheme()
 
 	useAllData()
 
@@ -23,7 +25,8 @@ const Layout: FC<LayoutProps> = ({ mode, children }) => {
 			gridTemplateColumns: '180px 1fr 180px',
 			gridTemplateAreas: `"board board board" "${mode === 'player' ? 'buzzer' : 'hostControls'} buzzers buzzOrder"`,
 			gap: '16px',
-			padding: '16px'
+			padding: '16px',
+			backgroundColor: theme.colors.dark[8]
 		}}>
 			{children}
 		</Box>

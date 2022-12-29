@@ -19,6 +19,7 @@ export interface QuestionSafe {
 
 export interface Question extends QuestionSafe {
 	answer: string;
+	amount: number;
 }
 
 export interface Square extends Question {
@@ -33,7 +34,7 @@ export const boardStore = create<BoardState>()(subscribeWithSelector((set, get) 
 		set({
 			questions: Object.entries(questions).map<[string, Square[]]>(([category, plainQuestions]) => [
 				category,
-				plainQuestions.map(plainQuestion => ({ ...plainQuestion, active: true }))
+				plainQuestions.map((plainQuestion, i) => ({ ...plainQuestion, active: true, amount: (i + 1) * 200 }))
 			]).reduce((accumulator, [key, value]) => ({ ...accumulator, [key]: value }), {})
 		})
 	},
