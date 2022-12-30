@@ -1,4 +1,4 @@
-import { Group, Stack, Button, Text, ActionIcon, Divider, Box, Center, Paper, useMantineTheme } from '@mantine/core'
+import { Group, Stack, Button, Text, ActionIcon, Divider, Box, Center, Paper, useMantineTheme, Title } from '@mantine/core'
 import { IconCheck, IconX } from '@tabler/icons'
 import { useMemo, type FC, type ReactNode } from 'react'
 import { usePlayerStore } from 'state/playerClientStore'
@@ -7,6 +7,8 @@ import { trpc } from 'utils/trpc'
 const Buzzers: FC = () => {
 
 	const players = usePlayerStore(state => state.players)
+	const playerNames = useMemo(() => Object.keys(players), [players])
+
 	const ownPlayerName = usePlayerStore(state => state.playerName)
 	const isPlayer = usePlayerStore(state => state.isPlayer)
 
@@ -16,15 +18,17 @@ const Buzzers: FC = () => {
 			display: 'flex'
 		}}>
 			{
-				isPlayer
-					? Object.keys(players).map(playerName => {
-						return ownPlayerName === playerName
-							? <PlayerSelfBuzzer key={playerName} playerName={playerName} />
-							: <Buzzer key={playerName} playerName={playerName} />
-					})
-					: Object.keys(players).map(playerName => {
-						return <HostBuzzer key={playerName} playerName={playerName} />
-					})
+				playerNames.length
+					? isPlayer
+						? playerNames.map(playerName => {
+							return ownPlayerName === playerName
+								? <PlayerSelfBuzzer key={playerName} playerName={playerName} />
+								: <Buzzer key={playerName} playerName={playerName} />
+						})
+						: playerNames.map(playerName => {
+							return <HostBuzzer key={playerName} playerName={playerName} />
+						})
+					: <EmptyPlayerSection />
 			}
 		</Group>
 	)
@@ -140,6 +144,19 @@ const HostBuzzer: FC<BuzzerProps> = ({ playerName }) => {
 			</Box>
 		</Buzzer>
 	)
+}
+
+const EmptyPlayerSection: FC = () => {
+	return <Paper style={{
+		width: '100%',
+		height: '100%'
+	}}>
+		<Center style={{
+			height: '100%'
+		}}>
+			<Title order={2} align='center'>Waiting for players to join . . .</Title>
+		</Center>
+	</Paper>
 }
 
 export default Buzzers

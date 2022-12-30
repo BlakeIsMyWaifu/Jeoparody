@@ -3,6 +3,7 @@ import { type FC } from 'react'
 import { useState } from 'react'
 import { useRef } from 'react'
 import type { ImportQuestion } from 'server/trpc/state/boardServerStore'
+import { useBoardStore } from 'state/boardClientStore'
 import { ArrayToObject } from 'utils/ArrayToObject'
 import { trpc } from 'utils/trpc'
 import { z } from 'zod'
@@ -20,11 +21,16 @@ const ImportQuestions: FC = () => {
 
 	const importQuestions = trpc.board.importQuestions.useMutation()
 
+	const hasActiveQuestion = !!useBoardStore(state => state.question)
+
 	return (
 		<>
-			<Button fullWidth onClick={() => {
-				fileInputRef.current?.click()
-			}}>
+			<Button
+				fullWidth
+				disabled={hasActiveQuestion}
+				onClick={() => {
+					fileInputRef.current?.click()
+				}}>
 				Import Questions
 			</Button>
 
