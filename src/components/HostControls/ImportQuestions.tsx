@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRef } from 'react'
 import type { ImportQuestion } from 'server/trpc/state/boardServerStore'
 import { useBoardStore } from 'state/boardClientStore'
-import { ArrayToObject } from 'utils/ArrayToObject'
+import { arrayToObject } from 'utils/arrayToObject'
 import { trpc } from 'utils/trpc'
 import { z } from 'zod'
 
@@ -130,7 +130,7 @@ const validateSchema = (data: unknown): ValidateSchemaReturn => {
 	} else {
 		return {
 			success: true,
-			data: ArrayToObject(Object.entries(result.data).map(([key, value]) => [key, value.map(v => ({ ...v, image: v.image ?? null }))]))
+			data: arrayToObject(Object.entries(result.data).map(([key, value]) => [key, value.map(v => ({ ...v, image: v.image ?? null }))]))
 		}
 	}
 }

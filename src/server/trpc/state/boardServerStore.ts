@@ -1,4 +1,4 @@
-import { ArrayToObject } from 'utils/ArrayToObject'
+import { arrayToObject } from 'utils/arrayToObject'
 import { subscribeWithSelector } from 'zustand/middleware'
 import create from 'zustand/vanilla'
 
@@ -36,7 +36,7 @@ export const boardStore = create<BoardState>()(subscribeWithSelector((set, get) 
 
 	importQuestions: questions => {
 		set({
-			questions: ArrayToObject(Object.entries(questions).map<[string, Square[]]>(([category, plainQuestions]) => [
+			questions: arrayToObject(Object.entries(questions).map<[string, Square[]]>(([category, plainQuestions]) => [
 				category,
 				plainQuestions.map((plainQuestion, i) => ({ ...plainQuestion, active: true, amount: (i + 1) * 200 }))
 			]))

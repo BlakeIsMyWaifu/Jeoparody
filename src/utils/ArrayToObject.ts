@@ -1,3 +1,3 @@
-export const ArrayToObject = <T>(array: [string, T][]): Record<string, T> => {
+export const arrayToObject = <T>(array: [string, T][]): Record<string, T> => {
 	return array.reduce((accumulator, [key, value]) => ({ ...accumulator, [key]: value }), {})
 }

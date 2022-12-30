@@ -1,5 +1,5 @@
 import { observable } from '@trpc/server/observable'
-import { ArrayToObject } from 'utils/ArrayToObject'
+import { arrayToObject } from 'utils/arrayToObject'
 import { z } from 'zod'
 
 import { type Square } from '../state/boardServerStore'
@@ -7,7 +7,7 @@ import { publicProcedure, router } from '../trpc'
 import { eventEmitter } from './_app'
 
 const questionsToBoard = (questions: Record<string, Square[]>): Record<string, boolean[]> => {
-	return ArrayToObject(Object.entries(questions).map<[string, boolean[]]>(([categories, plainQuestions]) => [
+	return arrayToObject(Object.entries(questions).map<[string, boolean[]]>(([categories, plainQuestions]) => [
 		categories,
 		plainQuestions.map(question => question.active)
 	]))
