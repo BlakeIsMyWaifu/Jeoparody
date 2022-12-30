@@ -7,7 +7,7 @@ import { boardActionName } from './createActionName'
 interface QuestionStore {
 	board: Record<string, boolean[]>;
 	question: string | null;
-	image?: string | null;
+	image: string | null;
 
 	setBoard: (board: Record<string, boolean[]>) => void;
 	setQuestion: (fullQuestion: QuestionSafe | null) => void;

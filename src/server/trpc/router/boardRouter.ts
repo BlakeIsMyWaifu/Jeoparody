@@ -1,4 +1,5 @@
 import { observable } from '@trpc/server/observable'
+import { ArrayToObject } from 'utils/ArrayToObject'
 import { z } from 'zod'
 
 import { type Square } from '../state/boardServerStore'
@@ -6,10 +7,10 @@ import { publicProcedure, router } from '../trpc'
 import { eventEmitter } from './_app'
 
 const questionsToBoard = (questions: Record<string, Square[]>): Record<string, boolean[]> => {
-	return Object.entries(questions).map<[string, boolean[]]>(([categories, plainQuestions]) => [
+	return ArrayToObject(Object.entries(questions).map<[string, boolean[]]>(([categories, plainQuestions]) => [
 		categories,
 		plainQuestions.map(question => question.active)
-	]).reduce((accumulator, [key, value]) => ({ ...accumulator, [key]: value }), {})
+	]))
 }
 
 export const boardRouter = router({
@@ -17,7 +18,7 @@ export const boardRouter = router({
 		.input(z.record(z.array(z.object({
 			question: z.string(),
 			answer: z.string(),
-			image: z.string().optional()
+			image: z.union([z.string(), z.null()])
 		})).length(5)))
 		.mutation(({ ctx, input }) => {
 			ctx.boardStore.getState().importQuestions(input)

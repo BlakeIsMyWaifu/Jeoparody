@@ -1,3 +1,4 @@
+import { ArrayToObject } from 'utils/ArrayToObject'
 import { subscribeWithSelector } from 'zustand/middleware'
 import create from 'zustand/vanilla'
 
@@ -7,18 +8,21 @@ export interface BoardState {
 	questions: Record<string, Square[]>;
 	activeQuestion: Question | null;
 
-	importQuestions: (questions: Record<string, Question[]>) => void;
+	importQuestions: (questions: Record<string, ImportQuestion[]>) => void;
 	selectQuestion: (category: string, index: number) => void;
 	endQuestion: () => void;
 }
 
 export interface QuestionSafe {
 	question: string;
-	image?: string;
+	image: string | null;
 }
 
-export interface Question extends QuestionSafe {
+export interface ImportQuestion extends QuestionSafe {
 	answer: string;
+}
+
+export interface Question extends ImportQuestion {
 	amount: number;
 }
 
@@ -32,10 +36,10 @@ export const boardStore = create<BoardState>()(subscribeWithSelector((set, get) 
 
 	importQuestions: questions => {
 		set({
-			questions: Object.entries(questions).map<[string, Square[]]>(([category, plainQuestions]) => [
+			questions: ArrayToObject(Object.entries(questions).map<[string, Square[]]>(([category, plainQuestions]) => [
 				category,
 				plainQuestions.map((plainQuestion, i) => ({ ...plainQuestion, active: true, amount: (i + 1) * 200 }))
-			]).reduce((accumulator, [key, value]) => ({ ...accumulator, [key]: value }), {})
+			]))
 		})
 	},
 	selectQuestion: (category, index) => {

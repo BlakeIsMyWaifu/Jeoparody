@@ -2,6 +2,8 @@ import { Button, Modal, Text } from '@mantine/core'
 import { type FC } from 'react'
 import { useState } from 'react'
 import { useRef } from 'react'
+import type { ImportQuestion } from 'server/trpc/state/boardServerStore'
+import { ArrayToObject } from 'utils/ArrayToObject'
 import { trpc } from 'utils/trpc'
 import { z } from 'zod'
 
@@ -100,8 +102,12 @@ const validateJson = (data: unknown): boolean => {
 	return result.success
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const validateSchema = (data: unknown) => {
+interface ValidateSchemaReturn {
+	success: boolean;
+	data: Record<string, ImportQuestion[]>;
+}
+
+const validateSchema = (data: unknown): ValidateSchemaReturn => {
 	const schema = z.record(z.array(z.object({
 		question: z.string(),
 		answer: z.string(),
@@ -109,9 +115,18 @@ const validateSchema = (data: unknown) => {
 	})).length(5))
 
 	const result = schema.safeParse(data)
-	if (!result.success) console.error(result.error)
-
-	return result
+	if (!result.success) {
+		console.error(result.error)
+		return {
+			success: false,
+			data: {}
+		}
+	} else {
+		return {
+			success: true,
+			data: ArrayToObject(Object.entries(result.data).map(([key, value]) => [key, value.map(v => ({ ...v, image: v.image ?? null }))]))
+		}
+	}
 }
 
 export default ImportQuestions

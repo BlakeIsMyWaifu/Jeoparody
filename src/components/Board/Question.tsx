@@ -1,15 +1,17 @@
-import { Button, Center, Group, Paper, Stack, Text } from '@mantine/core'
+import { Box, Button, Group, Paper, Stack, Text } from '@mantine/core'
 import { type FC } from 'react'
 import { useHostStore } from 'state/hostClientStore'
 import { useBoardStore } from 'state/boardClientStore'
 import { trpc } from 'utils/trpc'
 import { usePlayerStore } from 'state/playerClientStore'
+import Image from 'next/image'
 
 const Question: FC = () => {
 
 	const isHost = useHostStore(state => state.isHost)
 
 	const question = useBoardStore(state => state.question)
+	const image = useBoardStore(state => state.image)
 
 	return (
 		<Paper style={{
@@ -19,14 +21,31 @@ const Question: FC = () => {
 			width: '100%',
 			height: '100%'
 		}}>
-			<Center style={{
+			<Stack justify='center' style={{
+				position: 'absolute',
+				top: 0,
+				left: 0,
+				width: '100%',
 				height: '100%'
 			}}>
-				<Stack>
-					<Text size={48} align='center'>{question}</Text>
-					{isHost && <HostQuestion />}
-				</Stack>
-			</Center>
+				<Text size={48} align='center'>{question}</Text>
+				{
+					image && <Box style={{
+						height: '40vh',
+						position: 'relative'
+					}}>
+						<Image
+							fill
+							src={image}
+							alt='Question Image'
+							style={{
+								objectFit: 'contain'
+							}}
+						/>
+					</Box>
+				}
+				{isHost && <HostQuestion />}
+			</Stack>
 		</Paper>
 	)
 }
