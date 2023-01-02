@@ -110,7 +110,8 @@ const AnswerButton: FC<AnswerButtonProps> = ({ playerName, correct }) => {
 
 	const hasBuzzed = usePlayerStore(state => state.buzzes).includes(playerName)
 
-	const adjustPoints = trpc.players.adjustPoints.useMutation()
+	const playerCorrect = trpc.points.playerCorrect.useMutation()
+	const playerWrong = trpc.points.playerWrong.useMutation()
 
 	const endQuestion = trpc.question.endQuestion.useMutation()
 
@@ -120,11 +121,12 @@ const AnswerButton: FC<AnswerButtonProps> = ({ playerName, correct }) => {
 			disabled={!hasBuzzed}
 			color={correct ? 'green' : 'red'}
 			onClick={async () => {
-				await adjustPoints.mutateAsync({
-					player: playerName,
-					amount: correct
-				})
-				if (correct) await endQuestion.mutateAsync()
+				if (correct) {
+					await playerCorrect.mutateAsync(playerName)
+					await endQuestion.mutateAsync()
+				} else {
+					await playerWrong.mutateAsync(playerName)
+				}
 			}}
 		>
 			{correct ? <IconCheck /> : <IconX />}

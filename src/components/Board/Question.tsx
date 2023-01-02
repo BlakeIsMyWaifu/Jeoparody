@@ -10,43 +10,45 @@ const Question: FC = () => {
 
 	const isHost = useHostStore(state => state.isHost)
 
-	const question = useBoardStore(state => state.question)
-	const image = useBoardStore(state => state.image)
-
 	return (
 		<Paper style={{
-			position: 'absolute',
-			top: 0,
-			left: 0,
-			width: '100%',
+			gridArea: 'board',
 			height: '100%'
 		}}>
 			<Stack justify='center' style={{
-				position: 'absolute',
-				top: 0,
-				left: 0,
-				width: '100%',
 				height: '100%'
 			}}>
-				<Text size={48} align='center'>{question}</Text>
-				{
-					image && <Box style={{
-						height: '40vh',
-						position: 'relative'
-					}}>
-						<Image
-							fill
-							src={image}
-							alt='Question Image'
-							style={{
-								objectFit: 'contain'
-							}}
-						/>
-					</Box>
-				}
+				<QuestionQuestion />
 				{isHost && <HostQuestion />}
 			</Stack>
 		</Paper>
+	)
+}
+
+export const QuestionQuestion: FC = () => {
+
+	const question = useBoardStore(state => state.question.question)
+	const image = useBoardStore(state => state.question.image)
+
+	return (
+		<>
+			<Text size={48} align='center'>{question}</Text>
+			{
+				image && <Box style={{
+					height: '40vh',
+					position: 'relative'
+				}}>
+					<Image
+						fill
+						src={image}
+						alt='Question Image'
+						style={{
+							objectFit: 'contain'
+						}}
+					/>
+				</Box>
+			}
+		</>
 	)
 }
 

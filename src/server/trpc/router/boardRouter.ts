@@ -22,6 +22,7 @@ export const boardRouter = router({
 		})).length(5)))
 		.mutation(({ ctx, input }) => {
 			ctx.boardStore.getState().importQuestions(input)
+			ctx.roomStore.getState().setLastRoundWinner(null)
 		}),
 	onUpdateBoard: publicProcedure
 		.subscription(({ ctx }) => {

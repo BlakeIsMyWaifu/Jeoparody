@@ -3,6 +3,7 @@ import { type FC } from 'react'
 import { useBoardStore } from 'state/boardClientStore'
 import { useHostStore } from 'state/hostClientStore'
 import { trpc } from 'utils/trpc'
+import DailyDouble from './DailyDouble'
 import Question from './Question'
 
 interface UseStyleProps {
@@ -34,41 +35,57 @@ const Board: FC = () => {
 
 	const board = useBoardStore(state => state.board)
 
-	const question = useBoardStore(state => state.question)
+	const question = useBoardStore(state => state.question.question)
+	const dailyDouble = useBoardStore(state => state.question.dailyDouble)
+	const lastRoundWinner = useBoardStore(state => state.lastRoundWinner)
 
 	return (
 		<Box className={classes.container}>
 			{
 				Object.keys(board).length
-					? <Group
-						grow
-						position='apart'
-						className={classes.maxHeight}
-					>
-						{
-							Object.entries(board).map(([category, squares]) => {
-								return <Stack key={category} style={{
-									height: '100%'
-								}}>
-									<CategorySquare category={category} />
-									{
-										squares.map((active, i) => {
-											return <QuestionSquare
-												key={i}
-												category={category}
-												index={i}
-												active={active}
-											/>
-										})
-									}
-								</Stack>
-							})
-						}
-					</Group>
+					? question
+						? dailyDouble && lastRoundWinner
+							? <DailyDouble />
+							: <Question />
+						: <QuestionBoard />
 					: <EmptyBoard />
 			}
-			{question && <Question />}
 		</Box>
+	)
+}
+
+const QuestionBoard: FC = () => {
+
+	const { classes } = useStyles({})
+
+	const board = useBoardStore(state => state.board)
+
+	return (
+		<Group
+			grow
+			position='apart'
+			className={classes.maxHeight}
+		>
+			{
+				Object.entries(board).map(([category, squares]) => {
+					return <Stack key={category} style={{
+						height: '100%'
+					}}>
+						<CategorySquare category={category} />
+						{
+							squares.map((active, i) => {
+								return <QuestionSquare
+									key={i}
+									category={category}
+									index={i}
+									active={active}
+								/>
+							})
+						}
+					</Stack>
+				})
+			}
+		</Group>
 	)
 }
 
@@ -101,11 +118,7 @@ const QuestionSquare: FC<QuestionSquareProps> = ({ category, index, active }) =>
 
 	const { classes } = useStyles({ hover: isHost, inactive: !active })
 
-	const selectQuestion = trpc.question.selectQuestion.useMutation({
-		onSuccess: data => {
-			setActiveQuestionAnswer(data?.answer ?? null)
-		}
-	})
+	const selectQuestion = trpc.question.selectQuestion.useMutation({ onSuccess: setActiveQuestionAnswer })
 
 	return (
 		<Paper className={classes.square} onClick={() => {

@@ -4,17 +4,22 @@ import { z } from 'zod'
 import { publicProcedure, router } from '../trpc'
 import { eventEmitter } from './_app'
 
+export interface UpdateRoom {
+	players: Record<string, number>;
+	host: boolean;
+	lastRoundWinner: string | null;
+}
+
 export const roomRouter = router({
 	becomeHost: publicProcedure
-		.mutation(({ ctx }) => {
+		.mutation<boolean>(({ ctx }) => {
 			if (ctx.roomStore.getState().host) return false
 			ctx.roomStore.getState().setHost(true)
-			eventEmitter.emit('hostJoined')
 			return true
 		}),
 	becomePlayer: publicProcedure
 		.input(z.string())
-		.mutation<[boolean, string]>(({ ctx, input }) => {
+		.mutation<[status: boolean, message: string]>(({ ctx, input }) => {
 			if (!ctx.roomStore.getState().host) return [false, 'No host found']
 			if (!input.length) return [false, 'Name is required']
 			if (Object.keys(ctx.roomStore.getState().players).includes(input)) return [false, 'Name already taken']
@@ -23,20 +28,26 @@ export const roomRouter = router({
 			return [true, input]
 		}),
 
-	getHasHost: publicProcedure
-		.query(({ ctx }) => {
-			return ctx.roomStore.getState().host
-		}),
-	onHostJoined: publicProcedure
+	onUpdateRoom: publicProcedure
 		.subscription(({ ctx }) => {
-			return observable<boolean>(emit => {
-				const onHostJoined = (): void => {
-					emit.next(ctx.roomStore.getState().host)
+			return observable<UpdateRoom>(emit => {
+				const onUpdatePlayers = (): void => {
+					const { players, host, lastRoundWinner } = ctx.roomStore.getState()
+					emit.next({ players, host, lastRoundWinner })
 				}
-				eventEmitter.on('hostJoined', onHostJoined)
+				eventEmitter.on('updateRoom', onUpdatePlayers)
 				return () => {
-					eventEmitter.off('hostJoined', onHostJoined)
+					eventEmitter.off('updateRoom', onUpdatePlayers)
 				}
+			})
+		}),
+	getRoom: publicProcedure
+		.query<UpdateRoom>(({ ctx }) => {
+			const { players, host, lastRoundWinner } = ctx.roomStore.getState()
+			return ({
+				players,
+				host,
+				lastRoundWinner
 			})
 		})
 })

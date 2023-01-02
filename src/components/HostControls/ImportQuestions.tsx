@@ -2,7 +2,7 @@ import { Button, Modal, Text } from '@mantine/core'
 import { type FC } from 'react'
 import { useState } from 'react'
 import { useRef } from 'react'
-import type { ImportQuestion } from 'server/trpc/state/boardServerStore'
+import { type ImportQuestion } from 'server/trpc/state/boardServerStore'
 import { useBoardStore } from 'state/boardClientStore'
 import { arrayToObject } from 'utils/arrayToObject'
 import { trpc } from 'utils/trpc'
@@ -21,7 +21,7 @@ const ImportQuestions: FC = () => {
 
 	const importQuestions = trpc.board.importQuestions.useMutation()
 
-	const hasActiveQuestion = !!useBoardStore(state => state.question)
+	const hasActiveQuestion = !!useBoardStore(state => state.question.question)
 
 	return (
 		<>

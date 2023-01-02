@@ -1,4 +1,4 @@
-import { type QuestionSafe } from 'server/trpc/state/boardServerStore'
+import { type CompleteQuestionSafe } from 'server/trpc/state/boardServerStore'
 import create from 'zustand'
 import { devtools } from 'zustand/middleware'
 
@@ -6,26 +6,42 @@ import { boardActionName } from './createActionName'
 
 interface QuestionStore {
 	board: Record<string, boolean[]>;
-	question: string | null;
-	image: string | null;
+	question: CompleteQuestionSafe;
+	lastRoundWinner: string | null;
+	dailyDoubleWager: number;
 
 	setBoard: (board: Record<string, boolean[]>) => void;
-	setQuestion: (fullQuestion: QuestionSafe | null) => void;
+	setQuestion: (fullQuestion: CompleteQuestionSafe) => void;
+	setDailyDoubleWager: (amount: number) => void;
+	setLastRoundWinner: (playerName: string | null) => void;
 }
 
 export const useBoardStore = create<QuestionStore>()(devtools(set => ({
 	board: {},
-	question: null,
-	image: null,
+	question: {
+		question: null,
+		image: null,
+		dailyDouble: null
+	},
+	lastRoundWinner: null,
+	dailyDoubleWager: 0,
 
 	setBoard: board => {
 		set({ board }, ...boardActionName('setBoard'))
 	},
-	setQuestion: fullQuestion => {
-		const { question, image } = fullQuestion ?? { question: null, image: null }
+	setQuestion: ({ question, image, dailyDouble }) => {
 		set({
-			question,
-			image
+			question: {
+				question,
+				image,
+				dailyDouble
+			}
 		}, ...boardActionName('setQuestion'))
+	},
+	setDailyDoubleWager: amount => {
+		set({ dailyDoubleWager: amount }, ...boardActionName('setDailyDoubleWager'))
+	},
+	setLastRoundWinner: playerName => {
+		set({ lastRoundWinner: playerName }, ...boardActionName('setLastRoundWinner'))
 	}
 }), { name: 'Board' }))
