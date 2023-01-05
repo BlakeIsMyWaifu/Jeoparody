@@ -98,7 +98,7 @@ const CategorySquare: FC<CategorySquareProps> = ({ category }) => {
 	const { classes } = useStyles({})
 
 	return (
-		<Paper className={classes.square}>
+		<Paper className={classes.square} p='xs'>
 			<Center className={classes.maxHeight}>
 				<Title order={2} align='center'>{category}</Title>
 			</Center>

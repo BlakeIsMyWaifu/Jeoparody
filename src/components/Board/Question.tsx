@@ -15,9 +15,12 @@ const Question: FC = () => {
 			gridArea: 'board',
 			height: '100%'
 		}}>
-			<Stack justify='center' style={{
-				height: '100%'
-			}}>
+			<Stack
+				justify='center'
+				p='sm'
+				style={{
+					height: '100%'
+				}}>
 				<QuestionQuestion />
 				{isHost && <HostQuestion />}
 			</Stack>
@@ -42,9 +45,11 @@ export const QuestionQuestion: FC = () => {
 						fill
 						src={image}
 						alt='Question Image'
+						draggable={false}
 						style={{
 							objectFit: 'contain'
 						}}
+						onContextMenu={event => event.preventDefault()}
 					/>
 				</Box>
 			}

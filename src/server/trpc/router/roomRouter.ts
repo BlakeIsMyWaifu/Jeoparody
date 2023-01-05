@@ -20,7 +20,6 @@ export const roomRouter = router({
 	becomePlayer: publicProcedure
 		.input(z.string())
 		.mutation<[status: boolean, message: string]>(({ ctx, input }) => {
-			if (!ctx.roomStore.getState().host) return [false, 'No host found']
 			if (!input.length) return [false, 'Name is required']
 			if (Object.keys(ctx.roomStore.getState().players).includes(input)) return [false, 'Name already taken']
 
