@@ -7,4 +7,9 @@ export const useBoardData = (): void => {
 
 	trpc.board.onUpdateBoard.useSubscription(undefined, { onData: setBoard })
 	trpc.board.getBoard.useQuery(undefined, { onSuccess: setBoard })
+
+	const setBoardScale = useBoardStore(state => state.setBoardScale)
+
+	trpc.board.onUpdateBoardScale.useSubscription(undefined, { onData: setBoardScale })
+	trpc.board.getBoardScale.useQuery(undefined, { onSuccess: setBoardScale })
 }

@@ -20,7 +20,7 @@ export const boardRouter = router({
 			answer: z.string(),
 			image: z.union([z.string(), z.null()])
 		})).length(5)))
-		.mutation(({ ctx, input }) => {
+		.mutation<void>(({ ctx, input }) => {
 			ctx.boardStore.getState().importQuestions(input)
 			ctx.roomStore.getState().setLastRoundWinner(null)
 		}),
@@ -38,7 +38,30 @@ export const boardRouter = router({
 			})
 		}),
 	getBoard: publicProcedure
-		.query(({ ctx }) => {
+		.query<Record<string, boolean[]>>(({ ctx }) => {
 			return questionsToBoard(ctx.boardStore.getState().questions)
+		}),
+
+	updateBoardScale: publicProcedure
+		.input(z.number())
+		.mutation<void>(({ ctx, input }) => {
+			ctx.boardStore.getState().setBoardScale(input)
+		}),
+	onUpdateBoardScale: publicProcedure
+		.subscription(({ ctx }) => {
+			return observable<number>(emit => {
+				const onUpdateBoardScale = (): void => {
+					const { boardScale } = ctx.boardStore.getState()
+					emit.next(boardScale)
+				}
+				eventEmitter.on('updateBoardScale', onUpdateBoardScale)
+				return () => {
+					eventEmitter.off('updateBoardScale', onUpdateBoardScale)
+				}
+			})
+		}),
+	getBoardScale: publicProcedure
+		.query<number>(({ ctx }) => {
+			return ctx.boardStore.getState().boardScale
 		})
 })

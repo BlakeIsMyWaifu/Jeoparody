@@ -10,11 +10,13 @@ export interface BoardState {
 	activeQuestion: ActiveQuestion | null;
 	dailyDouble: DailyDouble | null;
 	dailyDoubleWager: number;
+	boardScale: number;
 
 	importQuestions: (questions: Record<string, ImportQuestion[]>) => void;
 	selectQuestion: (category: string, index: number) => void;
 	endQuestion: () => void;
 	setDailyDoubleWager: (amount: number) => void;
+	setBoardScale: (scale: number) => void;
 }
 
 type DailyDouble = [category: string, questionIndex: number]
@@ -48,6 +50,7 @@ export const boardStore = create<BoardState>()(subscribeWithSelector((set, get) 
 	activeQuestion: null,
 	dailyDouble: null,
 	dailyDoubleWager: 0,
+	boardScale: 200,
 
 	importQuestions: questions => {
 
@@ -61,18 +64,18 @@ export const boardStore = create<BoardState>()(subscribeWithSelector((set, get) 
 		])
 		if (!randomCategory || !randomQuestionTier) return
 
-		set({
+		set(state => ({
 			questions: arrayToObject(Object.entries(questions).map<[string, Square[]]>(([category, plainQuestions]) => [
 				category,
 				plainQuestions.map((plainQuestion, i) => ({
 					...plainQuestion,
 					active: true,
-					amount: (i + 1) * 200,
+					amount: (i + 1) * state.boardScale,
 					dailyDouble: category === randomCategory && i === randomQuestionTier
 				}))
 			])),
 			dailyDouble: [randomCategory, randomQuestionTier]
-		})
+		}))
 	},
 	selectQuestion: (category, index) => {
 
@@ -92,6 +95,18 @@ export const boardStore = create<BoardState>()(subscribeWithSelector((set, get) 
 	},
 	setDailyDoubleWager: amount => {
 		set({ dailyDoubleWager: amount })
+	},
+	setBoardScale: scale => {
+		set(state => ({
+			boardScale: scale,
+			questions: arrayToObject(Object.entries(state.questions).map<[string, Square[]]>(([category, plainQuestions]) => [
+				category,
+				plainQuestions.map((plainQuestion, i) => ({
+					...plainQuestion,
+					amount: (i + 1) * scale
+				}))
+			]))
+		}))
 	}
 })))
 
@@ -111,4 +126,9 @@ boardStore.subscribe(state => state.dailyDouble, dailyDouble => {
 
 boardStore.subscribe(state => state.dailyDoubleWager, dailyDoubleWager => {
 	console.log({ dailyDoubleWager })
+})
+
+boardStore.subscribe(state => state.boardScale, boardScale => {
+	console.log({ boardScale })
+	eventEmitter.emit('updateBoardScale')
 })

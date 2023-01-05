@@ -9,11 +9,13 @@ interface QuestionStore {
 	question: CompleteQuestionSafe;
 	lastRoundWinner: string | null;
 	dailyDoubleWager: number;
+	boardScale: number;
 
 	setBoard: (board: Record<string, boolean[]>) => void;
 	setQuestion: (fullQuestion: CompleteQuestionSafe) => void;
 	setDailyDoubleWager: (amount: number) => void;
 	setLastRoundWinner: (playerName: string | null) => void;
+	setBoardScale: (scale: number) => void;
 }
 
 export const useBoardStore = create<QuestionStore>()(devtools(set => ({
@@ -25,6 +27,7 @@ export const useBoardStore = create<QuestionStore>()(devtools(set => ({
 	},
 	lastRoundWinner: null,
 	dailyDoubleWager: 0,
+	boardScale: 200,
 
 	setBoard: board => {
 		set({ board }, ...boardActionName('setBoard'))
@@ -43,5 +46,9 @@ export const useBoardStore = create<QuestionStore>()(devtools(set => ({
 	},
 	setLastRoundWinner: playerName => {
 		set({ lastRoundWinner: playerName }, ...boardActionName('setLastRoundWinner'))
+	},
+	setBoardScale: scale => {
+		console.log({ scale })
+		set({ boardScale: scale }, ...boardActionName('setBoardScale'))
 	}
 }), { name: 'Board' }))

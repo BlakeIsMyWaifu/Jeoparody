@@ -120,13 +120,15 @@ const QuestionSquare: FC<QuestionSquareProps> = ({ category, index, active }) =>
 
 	const selectQuestion = trpc.question.selectQuestion.useMutation({ onSuccess: setActiveQuestionAnswer })
 
+	const boardScale = useBoardStore(state => state.boardScale)
+
 	return (
 		<Paper className={classes.square} onClick={() => {
 			if (!isHost || !active) return
 			selectQuestion.mutate({ category, index })
 		}}>
 			<Center className={classes.maxHeight}>
-				<Text size='xl'>£{(index + 1) * 200}</Text>
+				<Text size='xl'>£{(index + 1) * boardScale}</Text>
 			</Center>
 		</Paper>
 	)

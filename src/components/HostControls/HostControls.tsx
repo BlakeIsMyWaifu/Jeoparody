@@ -1,5 +1,6 @@
 import { Divider, Paper, ScrollArea, Stack } from '@mantine/core'
 import { type FC } from 'react'
+import BoardScale from './BoardScale'
 import ImportQuestions from './ImportQuestions'
 
 const HostControls: FC = () => {
@@ -15,6 +16,7 @@ const HostControls: FC = () => {
 			<Stack>
 				<Divider label='Host Controls' labelPosition='center' />
 				<ImportQuestions />
+				<BoardScale />
 			</Stack>
 		</Paper>
 	)
