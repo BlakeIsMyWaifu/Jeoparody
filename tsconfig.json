@@ -24,7 +24,7 @@
     "noUnusedParameters": false,
     "incremental": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": "src",
+    "baseUrl": "src"
   },
   "include": [
     "next-env.d.ts",
@@ -34,6 +34,7 @@
     "**/*.mjs"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }

@@ -1,7 +1,7 @@
 import { arrayToObject } from 'utils/arrayToObject'
 import { randomArrayElement, weightedRandomData } from 'utils/random'
+import create from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
-import create from 'zustand/vanilla'
 
 import { eventEmitter } from '../router/_app'
 

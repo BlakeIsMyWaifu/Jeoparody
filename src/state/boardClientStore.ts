@@ -48,7 +48,6 @@ export const useBoardStore = create<QuestionStore>()(devtools(set => ({
 		set({ lastRoundWinner: playerName }, ...boardActionName('setLastRoundWinner'))
 	},
 	setBoardScale: scale => {
-		console.log({ scale })
 		set({ boardScale: scale }, ...boardActionName('setBoardScale'))
 	}
 }), { name: 'Board' }))
