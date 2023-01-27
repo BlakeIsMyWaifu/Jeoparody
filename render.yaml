@@ -1,0 +1,21 @@
+services:
+- type: web
+  name: jeoparody
+  env: node
+  plan: free
+  buildCommand: NODE_ENV=development yarn install && yarn build
+  startCommand: yarn start
+  healthCheckPath: /api/trpc/healthcheck
+  envVars:
+    - key: NODE_ENV
+      value: production
+    - key: NODE_VERSION
+      value: 16.19.0
+    - key: APP_URL
+      value: https://jeoparody.onrender.com
+    - key: WS_URL
+      value: wss://jeoparody.onrender.com
+    - key: PORT
+      value: 3001
+    - key: CDN
+      value: "cdn.discordapp.com, i.imgur.com"
