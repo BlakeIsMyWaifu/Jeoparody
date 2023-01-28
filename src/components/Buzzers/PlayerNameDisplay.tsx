@@ -4,15 +4,17 @@ import { type Dispatch, type SetStateAction, useState, type FC } from 'react'
 import { useHostStore } from 'state/hostClientStore'
 import { trpc } from 'utils/trpc'
 
-interface KickButtonProps {
+interface PlayerNameDisplayProps {
 	playerName: string;
 }
 
-const KickButton: FC<KickButtonProps> = ({ playerName }) => {
+const PlayerNameDisplay: FC<PlayerNameDisplayProps> = ({ playerName }) => {
 
 	const isHost = useHostStore(state => state.isHost)
 
 	const [opened, setOpened] = useState(false)
+
+	const name = <Text align='center'>{playerName}</Text>
 
 	return isHost ? (
 		<>
@@ -21,17 +23,26 @@ const KickButton: FC<KickButtonProps> = ({ playerName }) => {
 				opened={opened}
 				setOpened={setOpened}
 			/>
-			<ActionIcon
-				variant='light'
-				size={20}
-				onClick={() => {
-					setOpened(true)
+			<Group
+				position='center'
+				align='end'
+				style={{
+					paddingLeft: '36px'
 				}}
 			>
-				<IconTrash size={20} />
-			</ActionIcon>
+				{name}
+				<ActionIcon
+					variant='light'
+					size={20}
+					onClick={() => {
+						setOpened(true)
+					}}
+				>
+					<IconTrash size={20} />
+				</ActionIcon>
+			</Group>
 		</>
-	) : null
+	) : name
 }
 
 interface KickModalProps {
@@ -62,4 +73,4 @@ const KickModal: FC<KickModalProps> = ({ playerName, opened, setOpened }) => {
 	)
 }
 
-export default KickButton
+export default PlayerNameDisplay

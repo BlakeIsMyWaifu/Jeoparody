@@ -3,7 +3,7 @@ import { type ReactNode, type FC, useMemo } from 'react'
 import { useHostStore } from 'state/hostClientStore'
 import { usePlayerStore } from 'state/playerClientStore'
 import PointsDisplay from './PointsDisplay'
-import KickButton from './KickButton'
+import PlayerNameDisplay from './PlayerNameDisplay'
 
 interface BuzzerProps {
 	playerName: string;
@@ -22,8 +22,6 @@ const Buzzer: FC<BuzzerProps> = ({ playerName, children }) => {
 		return firstBuzzed === playerName ? firstColour : (otherBuzzes.includes(playerName) ? otherColour : neutral)
 	}, [firstBuzzed, otherBuzzes, playerName, theme.colors])
 
-	const isHost = useHostStore(state => state.isHost)
-
 	return (
 		<Paper p='xs' style={{
 			height: '100%',
@@ -33,16 +31,7 @@ const Buzzer: FC<BuzzerProps> = ({ playerName, children }) => {
 			<Stack>
 				<Box>
 					<Divider label='Player' labelPosition='center' />
-					<Group
-						position='center'
-						align='end'
-						style={{
-							paddingLeft: isHost ? '36px' : 0
-						}}
-					>
-						<Text align='center'>{playerName}</Text>
-						<KickButton playerName={playerName} />
-					</Group>
+					<PlayerNameDisplay playerName={playerName} />
 				</Box>
 				<Box>
 					<Divider label='Points' labelPosition='center' />
