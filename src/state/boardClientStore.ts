@@ -2,23 +2,19 @@ import { type CompleteQuestionSafe } from 'server/trpc/state/boardServerStore'
 import create from 'zustand'
 import { devtools } from 'zustand/middleware'
 
-import { boardActionName } from './createActionName'
+import { boardActionName, type Slice } from 'utils/zustand'
 
-interface QuestionStore {
+type BoardStore = BoardStateSlice & BoardActionSlice
+
+interface BoardStateSlice {
 	board: Record<string, boolean[]>;
 	question: CompleteQuestionSafe;
 	lastRoundWinner: string | null;
 	dailyDoubleWager: number;
 	boardScale: number;
-
-	setBoard: (board: Record<string, boolean[]>) => void;
-	setQuestion: (fullQuestion: CompleteQuestionSafe) => void;
-	setDailyDoubleWager: (amount: number) => void;
-	setLastRoundWinner: (playerName: string | null) => void;
-	setBoardScale: (scale: number) => void;
 }
 
-export const useBoardStore = create<QuestionStore>()(devtools(set => ({
+const boardStateSlice: BoardStateSlice = {
 	board: {},
 	question: {
 		question: null,
@@ -27,8 +23,18 @@ export const useBoardStore = create<QuestionStore>()(devtools(set => ({
 	},
 	lastRoundWinner: null,
 	dailyDoubleWager: 0,
-	boardScale: 200,
+	boardScale: 200
+}
 
+interface BoardActionSlice {
+	setBoard: (board: Record<string, boolean[]>) => void;
+	setQuestion: (fullQuestion: CompleteQuestionSafe) => void;
+	setDailyDoubleWager: (amount: number) => void;
+	setLastRoundWinner: (playerName: string | null) => void;
+	setBoardScale: (scale: number) => void;
+}
+
+const boardActionSlice: Slice<BoardStore, BoardActionSlice> = set => ({
 	setBoard: board => {
 		set({ board }, ...boardActionName('setBoard'))
 	},
@@ -50,4 +56,9 @@ export const useBoardStore = create<QuestionStore>()(devtools(set => ({
 	setBoardScale: scale => {
 		set({ boardScale: scale }, ...boardActionName('setBoardScale'))
 	}
+})
+
+export const useBoardStore = create<BoardStore>()(devtools((...a) => ({
+	...boardStateSlice,
+	...boardActionSlice(...a)
 }), { name: 'Board' }))

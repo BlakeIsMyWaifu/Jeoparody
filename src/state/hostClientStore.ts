@@ -1,23 +1,28 @@
+import { hostActionName, type Slice } from 'utils/zustand'
 import create from 'zustand'
 import { devtools } from 'zustand/middleware'
 
-import { hostActionName } from './createActionName'
+type HostStore = HostStateSlice & HostActionSlice
 
-interface HostStore {
+interface HostStateSlice {
 	isHost: boolean;
 	hasHost: boolean;
 	activeQuestionAnswer: string | null;
+}
 
+const hostStateSlice: HostStateSlice = {
+	isHost: false,
+	hasHost: false,
+	activeQuestionAnswer: null
+}
+
+interface HostActionSlice {
 	becomeHost: () => void;
 	setHasHost: (status: boolean) => void;
 	setActiveQuestionAnswer: (answer: string | null) => void;
 }
 
-export const useHostStore = create<HostStore>()(devtools(set => ({
-	isHost: false,
-	hasHost: false,
-	activeQuestionAnswer: null,
-
+const hostActionSlice: Slice<HostStore, HostActionSlice> = set => ({
 	becomeHost: () => {
 		set({ isHost: true }, ...hostActionName('becomeHost'))
 	},
@@ -27,4 +32,9 @@ export const useHostStore = create<HostStore>()(devtools(set => ({
 	setActiveQuestionAnswer: answer => {
 		set({ activeQuestionAnswer: answer }, ...hostActionName('setActiveQuestionAnswer'))
 	}
+})
+
+export const useHostStore = create<HostStore>()(devtools((...a) => ({
+	...hostStateSlice,
+	...hostActionSlice(...a)
 }), { name: 'Host' }))
