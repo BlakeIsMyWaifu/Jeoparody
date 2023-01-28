@@ -13,7 +13,7 @@ export interface UpdateRoom {
 export const roomRouter = router({
 	becomeHost: publicProcedure
 		.mutation<boolean>(({ ctx }) => {
-			if (ctx.roomStore.getState().host) return false
+			// if (ctx.roomStore.getState().host) return false
 			ctx.roomStore.getState().setHost(true)
 			return true
 		}),
@@ -47,6 +47,26 @@ export const roomRouter = router({
 				players,
 				host,
 				lastRoundWinner
+			})
+		}),
+
+	kickPlayer: publicProcedure
+		.input(z.string())
+		.mutation<void>(({ ctx, input }) => {
+			ctx.roomStore.getState().kickPlayer(input)
+			eventEmitter.emit('kickPlayer', input)
+		}),
+	onKickPlayer: publicProcedure
+		.input(z.string())
+		.subscription(() => {
+			return observable<string>(emit => {
+				const onKickPlayer = (playerName: string): void => {
+					emit.next(playerName)
+				}
+				eventEmitter.on('kickPlayer', onKickPlayer)
+				return () => {
+					eventEmitter.off('kickPlayer', onKickPlayer)
+				}
 			})
 		})
 })

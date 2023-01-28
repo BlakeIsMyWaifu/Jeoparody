@@ -32,6 +32,7 @@ interface BoardActionSlice {
 	setDailyDoubleWager: (amount: number) => void;
 	setLastRoundWinner: (playerName: string | null) => void;
 	setBoardScale: (scale: number) => void;
+	reset: () => void;
 }
 
 const boardActionSlice: Slice<BoardStore, BoardActionSlice> = set => ({
@@ -55,6 +56,9 @@ const boardActionSlice: Slice<BoardStore, BoardActionSlice> = set => ({
 	},
 	setBoardScale: scale => {
 		set({ boardScale: scale }, ...boardActionName('setBoardScale'))
+	},
+	reset: () => {
+		set({ ...boardStateSlice })
 	}
 })
 

@@ -1,3 +1,4 @@
+import { arrayToObject } from 'utils/arrayToObject'
 import create from 'zustand'
 
 import { eventEmitter } from '../router/_app'
@@ -11,6 +12,7 @@ export interface RoomStore {
 	setHost: (hasHost: boolean) => void;
 	adjustPoints: (playerName: string, amount: number) => void;
 	setLastRoundWinner: (playerName: string | null) => void;
+	kickPlayer: (playerName: string) => void;
 }
 
 export const roomStore = create<RoomStore>()(set => ({
@@ -34,6 +36,11 @@ export const roomStore = create<RoomStore>()(set => ({
 	},
 	setLastRoundWinner: playerName => {
 		set({ lastRoundWinner: playerName })
+	},
+	kickPlayer: playerName => {
+		set(state => ({
+			players: arrayToObject(Object.entries(state.players).filter(([player]) => player !== playerName))
+		}))
 	}
 }))
 

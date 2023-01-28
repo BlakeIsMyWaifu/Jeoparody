@@ -20,6 +20,7 @@ interface HostActionSlice {
 	becomeHost: () => void;
 	setHasHost: (status: boolean) => void;
 	setActiveQuestionAnswer: (answer: string | null) => void;
+	reset: () => void;
 }
 
 const hostActionSlice: Slice<HostStore, HostActionSlice> = set => ({
@@ -31,6 +32,9 @@ const hostActionSlice: Slice<HostStore, HostActionSlice> = set => ({
 	},
 	setActiveQuestionAnswer: answer => {
 		set({ activeQuestionAnswer: answer }, ...hostActionName('setActiveQuestionAnswer'))
+	},
+	reset: () => {
+		set({ ...hostStateSlice })
 	}
 })
 

@@ -1,4 +1,4 @@
-import type { UpdateRoom } from 'server/trpc/router/roomRouter'
+import { type UpdateRoom } from 'server/trpc/router/roomRouter'
 import { useBoardStore } from 'state/boardClientStore'
 import { useHostStore } from 'state/hostClientStore'
 import { usePlayerStore } from 'state/playerClientStore'
@@ -18,4 +18,19 @@ export const useRoomData = (): void => {
 
 	trpc.room.onUpdateRoom.useSubscription(undefined, { onData: handleUpdate })
 	trpc.room.getRoom.useQuery(undefined, { onSuccess: handleUpdate })
+
+	const playerName = usePlayerStore(state => state.playerName)
+
+	const resetBoard = useBoardStore(state => state.reset)
+	const resetHost = useHostStore(state => state.reset)
+	const resetPlayer = usePlayerStore(state => state.reset)
+
+	trpc.room.onKickPlayer.useSubscription(playerName, {
+		onData: kickedPlayerName => {
+			if (playerName !== kickedPlayerName) return
+			resetBoard()
+			resetHost()
+			resetPlayer()
+		}
+	})
 }

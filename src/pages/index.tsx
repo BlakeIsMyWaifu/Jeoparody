@@ -1,7 +1,7 @@
 import { type NextPage } from 'next'
 import { Button, Modal, Title, Stack, TextInput, Divider, useMantineTheme, ActionIcon, Group, Text } from '@mantine/core'
 import { useHostStore } from 'state/hostClientStore'
-import { type Dispatch, type SetStateAction, useState, type FC } from 'react'
+import { useState, type FC } from 'react'
 import { trpc } from 'utils/trpc'
 import { usePlayerStore } from 'state/playerClientStore'
 import { useInputState } from '@mantine/hooks'
@@ -13,16 +13,12 @@ const HomePage: NextPage = () => {
 
 	useAllData()
 
-	const [inGame, setInGame] = useState(false)
+	const inGame = usePlayerStore(state => state.inGame)
 
-	return inGame ? <Layout /> : <HomeModal setInGame={setInGame} />
+	return inGame ? <Layout /> : <HomeModal />
 }
 
-interface SetInGame {
-	setInGame: Dispatch<SetStateAction<boolean>>;
-}
-
-const HomeModal: FC<SetInGame> = ({ setInGame }) => {
+const HomeModal: FC = () => {
 	return (
 		<Modal
 			centered
@@ -33,8 +29,8 @@ const HomeModal: FC<SetInGame> = ({ setInGame }) => {
 			<Stack spacing='xl'>
 				<Title align='center'>Jeoparody</Title>
 				<Online />
-				<Player setInGame={setInGame} />
-				<Host setInGame={setInGame} />
+				<Player />
+				<Host />
 			</Stack>
 		</Modal>
 	)
@@ -58,11 +54,13 @@ const Online: FC = () => {
 	)
 }
 
-const Player: FC<SetInGame> = ({ setInGame }) => {
+const Player: FC = () => {
 
 	const theme = useMantineTheme()
 
 	const setPlayer = usePlayerStore(state => state.setPlayer)
+
+	const setInGame = usePlayerStore(state => state.setInGame)
 
 	const [playerNameInput, setPlayerNameInput] = useInputState('')
 	const [playerNameInputDisabledMessage, setPlayerNameInputDisabledMessage] = useState<false | string>(false)
@@ -122,9 +120,11 @@ const Player: FC<SetInGame> = ({ setInGame }) => {
 	)
 }
 
-const Host: FC<SetInGame> = ({ setInGame }) => {
+const Host: FC = () => {
 
 	const becomeHost = useHostStore(state => state.becomeHost)
+
+	const setInGame = usePlayerStore(state => state.setInGame)
 
 	const host = trpc.room.becomeHost.useMutation({
 		onSuccess: data => {

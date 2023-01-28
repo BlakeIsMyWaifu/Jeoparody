@@ -10,6 +10,7 @@ interface PlayerStateSlice {
 	players: Record<string, number>;
 	buzzes: string[];
 	activeBuzzers: boolean;
+	inGame: boolean;
 }
 
 const playerStateSlice: PlayerStateSlice = {
@@ -17,7 +18,8 @@ const playerStateSlice: PlayerStateSlice = {
 	playerName: '',
 	players: {},
 	buzzes: [],
-	activeBuzzers: false
+	activeBuzzers: false,
+	inGame: false
 }
 
 interface PlayerActionSlice {
@@ -25,6 +27,8 @@ interface PlayerActionSlice {
 	setPlayers: (players: Record<string, number>) => void;
 	setBuzzes: (buzzes: string[]) => void;
 	setActiveBuzzers: (buzzerState: boolean) => void;
+	setInGame: (state: boolean) => void;
+	reset: () => void;
 }
 
 const playerActionSlice: Slice<PlayerStore, PlayerActionSlice> = set => ({
@@ -42,6 +46,12 @@ const playerActionSlice: Slice<PlayerStore, PlayerActionSlice> = set => ({
 	},
 	setActiveBuzzers: buzzerState => {
 		set({ activeBuzzers: buzzerState }, ...playerActionName('setActiveBuzzers'))
+	},
+	setInGame: state => {
+		set({ inGame: state })
+	},
+	reset: () => {
+		set({ ...playerStateSlice })
 	}
 })
 

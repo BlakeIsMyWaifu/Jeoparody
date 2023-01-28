@@ -1,10 +1,10 @@
 import { Box, useMantineTheme } from '@mantine/core'
 import { type FC } from 'react'
 import { useHostStore } from 'state/hostClientStore'
-import Board from './Board/Board'
+import Board from './Board'
 import Buzzers from './Buzzers'
 import BuzzOrder from './BuzzOrder'
-import HostControls from './HostControls/HostControls'
+import HostControls from './HostControls'
 import HostStatus from './HostStatus'
 
 const Layout: FC = () => {

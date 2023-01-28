@@ -1,8 +1,7 @@
-import http from 'http'
-import { parse } from 'url'
-
 import { applyWSSHandler } from '@trpc/server/adapters/ws'
 import next from 'next'
+import http from 'node:http'
+import { parse } from 'node:url'
 import ws from 'ws'
 
 import { createContext } from '../context'
