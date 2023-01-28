@@ -2,6 +2,7 @@ import { useMantineTheme, Paper, Stack, Box, Divider, Group, Text } from '@manti
 import { type ReactNode, type FC, useMemo } from 'react'
 import { useHostStore } from 'state/hostClientStore'
 import { usePlayerStore } from 'state/playerClientStore'
+import PointsDisplay from './PointsDisplay'
 import KickButton from './KickButton'
 
 interface BuzzerProps {
@@ -20,8 +21,6 @@ const Buzzer: FC<BuzzerProps> = ({ playerName, children }) => {
 		const otherColour = theme.colors.orange[9]
 		return firstBuzzed === playerName ? firstColour : (otherBuzzes.includes(playerName) ? otherColour : neutral)
 	}, [firstBuzzed, otherBuzzes, playerName, theme.colors])
-
-	const playerPoints = usePlayerStore(state => state.players[playerName])
 
 	const isHost = useHostStore(state => state.isHost)
 
@@ -47,7 +46,7 @@ const Buzzer: FC<BuzzerProps> = ({ playerName, children }) => {
 				</Box>
 				<Box>
 					<Divider label='Points' labelPosition='center' />
-					<Text align='center'>£{playerPoints}</Text>
+					<PointsDisplay playerName={playerName} />
 				</Box>
 				{children}
 			</Stack>
