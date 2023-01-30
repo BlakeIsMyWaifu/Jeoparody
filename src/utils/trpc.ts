@@ -44,7 +44,13 @@ export const trpc = createTRPCNext<AppRouter>({
 				getEndingLink(ctx)
 			],
 			transformer: superjson,
-			queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } }
+			queryClientConfig: {
+				defaultOptions: {
+					queries: {
+						refetchOnWindowFocus: false
+					}
+				}
+			}
 		}
 	},
 	ssr: true
