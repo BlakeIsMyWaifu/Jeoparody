@@ -5,7 +5,8 @@ export const serverSchema = z.object({
 	NODE_ENV: z.enum(['development', 'test', 'production']),
 	APP_URL: z.string().url(),
 	WS_URL: z.string().url(),
-	CDN: z.string()
+	CDN: z.string().optional(),
+	PORT: z.coerce.number().optional()
 })
 
 export const clientSchema = z.object({

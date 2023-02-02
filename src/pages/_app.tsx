@@ -5,9 +5,13 @@ import Head from 'next/head'
 import { trpc } from 'utils/trpc'
 
 const MyApp: AppType = ({ Component, pageProps }: AppProps) => {
+
+	const isDev = process.env.NODE_ENV !== 'production'
+	const title = isDev ? 'Jeoparody - Dev' : 'Jeoparody'
+
 	return <>
 		<Head>
-			<title>Jeoparody</title>
+			<title>{title}</title>
 			<link rel='icon' href='/favicon.ico' />
 			<meta charSet='UTF-8' />
 			<meta name='viewport' content='width=device-width, initial-scale=1.0' />
