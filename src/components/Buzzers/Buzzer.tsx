@@ -1,6 +1,5 @@
-import { useMantineTheme, Paper, Stack, Box, Divider, Group, Text } from '@mantine/core'
+import { useMantineTheme, Paper, Stack, Box, Divider } from '@mantine/core'
 import { type ReactNode, type FC, useMemo } from 'react'
-import { useHostStore } from 'state/hostClientStore'
 import { usePlayerStore } from 'state/playerClientStore'
 import PointsDisplay from './PointsDisplay'
 import PlayerNameDisplay from './PlayerNameDisplay'
@@ -24,9 +23,10 @@ const Buzzer: FC<BuzzerProps> = ({ playerName, children }) => {
 
 	return (
 		<Paper p='xs' style={{
-			height: '100%',
-			flex: '1 1 0',
-			border: `${border} 2px solid`
+			height: '200px',
+			flex: '1',
+			border: `${border} 2px solid`,
+			minWidth: '180px'
 		}}>
 			<Stack>
 				<Box>

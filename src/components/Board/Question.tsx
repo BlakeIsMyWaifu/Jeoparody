@@ -12,8 +12,9 @@ const Question: FC = () => {
 
 	return (
 		<Paper style={{
-			gridArea: 'board',
-			height: '100%'
+			position: 'absolute',
+			height: '100%',
+			width: '100%'
 		}}>
 			<Stack
 				justify='center'

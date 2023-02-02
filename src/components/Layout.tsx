@@ -1,4 +1,5 @@
-import { Box, useMantineTheme } from '@mantine/core'
+import { Group, Stack } from '@mantine/core'
+import { useCompactMode } from 'hooks/useCompactMode'
 import { type FC } from 'react'
 import { useHostStore } from 'state/hostClientStore'
 import Board from './Board'
@@ -9,30 +10,29 @@ import HostStatus from './HostStatus'
 
 const Layout: FC = () => {
 
-	const theme = useMantineTheme()
-
 	const isHost = useHostStore(state => state.isHost)
 
+	const compactMode = useCompactMode()
+
 	return (
-		<Box style={{
-			position: 'absolute',
-			height: '100vh',
-			width: '100vw',
-			top: '0',
-			left: '0',
-			display: 'grid',
-			gridTemplateRows: '1fr 200px',
-			gridTemplateColumns: '180px 1fr 180px',
-			gridTemplateAreas: '"board board board" "hostControls buzzers buzzOrder"',
-			gap: '16px',
-			padding: '16px',
-			backgroundColor: theme.colors.dark[8]
-		}}>
+		<Stack
+			p='md'
+			style={{
+				minHeight: '100vh'
+			}}>
 			<Board />
-			<Buzzers />
-			<BuzzOrder />
-			{isHost ? <HostControls /> : <HostStatus />}
-		</Box>
+			<Group
+				align='stretch'
+				position='center'
+				style={{
+					height: '200px',
+					flexWrap: compactMode ? 'wrap' : 'nowrap'
+				}}>
+				{isHost ? <HostControls /> : <HostStatus />}
+				<Buzzers />
+				<BuzzOrder />
+			</Group>
+		</Stack>
 	)
 }
 

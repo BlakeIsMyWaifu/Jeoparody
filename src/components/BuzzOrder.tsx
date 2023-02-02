@@ -12,7 +12,8 @@ const BuzzOrder: FC = () => {
 			component={ScrollArea}
 			type='auto'
 			style={{
-				gridArea: 'buzzOrder'
+				minWidth: '180px',
+				height: '200px'
 			}}
 		>
 			<Stack>

@@ -8,7 +8,8 @@ const HostStatus: FC = () => {
 
 	return (
 		<Paper p='xs' style={{
-			gridArea: 'hostControls'
+			minWidth: '180px',
+			height: '200px'
 		}}>
 			<Stack>
 				<Divider label='Host Status' labelPosition='center' />

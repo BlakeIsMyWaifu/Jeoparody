@@ -17,7 +17,12 @@ const MyApp: AppType = ({ Component, pageProps }: AppProps) => {
 			withGlobalStyles
 			withNormalizeCSS
 			theme={{
-				colorScheme: 'dark'
+				colorScheme: 'dark',
+				globalStyles: theme => ({
+					body: {
+						backgroundColor: theme.colors.dark[8]
+					}
+				})
 			}}
 		>
 			<Component {...pageProps} />

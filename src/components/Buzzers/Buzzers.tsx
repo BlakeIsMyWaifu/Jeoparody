@@ -1,4 +1,5 @@
 import { Group } from '@mantine/core'
+import { useCompactMode } from 'hooks/useCompactMode'
 import { useMemo, type FC } from 'react'
 import { usePlayerStore } from 'state/playerClientStore'
 import Buzzer from './Buzzer'
@@ -14,10 +15,12 @@ const Buzzers: FC = () => {
 	const ownPlayerName = usePlayerStore(state => state.playerName)
 	const isPlayer = usePlayerStore(state => state.isPlayer)
 
+	const compactMode = useCompactMode()
+
 	return (
 		<Group position='center' style={{
-			gridArea: 'buzzers',
-			display: 'flex'
+			width: '100%',
+			order: compactMode ? -1 : undefined
 		}}>
 			{
 				playerNames.length

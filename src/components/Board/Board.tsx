@@ -12,14 +12,13 @@ interface UseStyleProps {
 }
 
 const useStyles = createStyles((theme, { hover, inactive }: UseStyleProps) => ({
-	container: {
-		gridArea: 'board',
-		position: 'relative'
-	},
-	maxHeight: {
-		height: '100%'
+	full: {
+		position: 'absolute',
+		height: '100%',
+		width: '100%'
 	},
 	square: {
+		position: 'relative',
 		height: '100%',
 		visibility: inactive ? 'hidden' : 'visible',
 		'&:hover': hover && {
@@ -31,8 +30,6 @@ const useStyles = createStyles((theme, { hover, inactive }: UseStyleProps) => ({
 
 const Board: FC = () => {
 
-	const { classes } = useStyles({})
-
 	const board = useBoardStore(state => state.board)
 
 	const question = useBoardStore(state => state.question.question)
@@ -40,7 +37,10 @@ const Board: FC = () => {
 	const lastRoundWinner = useBoardStore(state => state.lastRoundWinner)
 
 	return (
-		<Box className={classes.container}>
+		<Box style={{
+			flex: 1,
+			position: 'relative'
+		}}>
 			{
 				Object.keys(board).length
 					? question
@@ -56,15 +56,17 @@ const Board: FC = () => {
 
 const QuestionBoard: FC = () => {
 
-	const { classes } = useStyles({})
-
 	const board = useBoardStore(state => state.board)
 
 	return (
 		<Group
 			grow
 			position='apart'
-			className={classes.maxHeight}
+			style={{
+				position: 'absolute',
+				height: '100%',
+				width: '100%'
+			}}
 		>
 			{
 				Object.entries(board).map(([category, squares]) => {
@@ -98,10 +100,18 @@ const CategorySquare: FC<CategorySquareProps> = ({ category }) => {
 	const { classes } = useStyles({})
 
 	return (
-		<Paper className={classes.square} p='xs'>
-			<Center className={classes.maxHeight}>
-				<Title order={2} align='center'>{category}</Title>
-			</Center>
+		<Paper
+			p='xs'
+			className={classes.square}
+			component={Center}
+		>
+			<Title
+				order={2}
+				align='center'
+				style={{
+					fontSize: 'clamp(0.75rem, 2vw, 2rem)'
+				}}
+			>{category}</Title>
 		</Paper>
 	)
 }
@@ -127,8 +137,10 @@ const QuestionSquare: FC<QuestionSquareProps> = ({ category, index, active }) =>
 			if (!isHost || !active) return
 			selectQuestion.mutate({ category, index })
 		}}>
-			<Center className={classes.maxHeight}>
-				<Text size='xl'>£{(index + 1) * boardScale}</Text>
+			<Center className={classes.full}>
+				<Text size='xl' style={{
+					fontSize: 'clamp(0.75rem, 2vw, 2rem)'
+				}}>£{(index + 1) * boardScale}</Text>
 			</Center>
 		</Paper>
 	)
@@ -139,10 +151,8 @@ const EmptyBoard: FC = () => {
 	const { classes } = useStyles({})
 
 	return (
-		<Paper className={classes.maxHeight}>
-			<Center className={classes.maxHeight}>
-				<Title order={2}>Waiting for host to import a question board . . .</Title>
-			</Center>
+		<Paper className={classes.full} component={Center}>
+			<Title order={2} align='center'>Waiting for host to import a question board . . .</Title>
 		</Paper>
 	)
 }

@@ -10,7 +10,8 @@ const HostControls: FC = () => {
 			component={ScrollArea}
 			type='auto'
 			style={{
-				gridArea: 'hostControls'
+				minWidth: '180px',
+				height: '200px'
 			}}
 		>
 			<Stack>
