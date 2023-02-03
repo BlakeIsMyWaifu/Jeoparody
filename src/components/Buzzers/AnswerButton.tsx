@@ -1,5 +1,5 @@
 import { ActionIcon } from '@mantine/core'
-import { IconCheck, IconX } from '@tabler/icons'
+import { IconCheck, IconX } from '@tabler/icons-react'
 import { type FC } from 'react'
 import { usePlayerStore } from 'state/playerClientStore'
 import { trpc } from 'utils/trpc'

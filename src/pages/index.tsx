@@ -5,7 +5,7 @@ import { useState, type FC } from 'react'
 import { trpc } from 'utils/trpc'
 import { usePlayerStore } from 'state/playerClientStore'
 import { useInputState } from '@mantine/hooks'
-import { IconArrowRight } from '@tabler/icons'
+import { IconArrowRight } from '@tabler/icons-react'
 import Layout from 'components/Layout'
 import { useAllData } from 'hooks/useAllData'
 

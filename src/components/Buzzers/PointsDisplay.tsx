@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Group, Modal, NumberInput, Stack, Text } from '@mantine/core'
 import { useInputState } from '@mantine/hooks'
-import { IconEdit } from '@tabler/icons'
+import { IconEdit } from '@tabler/icons-react'
 import { type Dispatch, type SetStateAction, type FC, useState } from 'react'
 import { useHostStore } from 'state/hostClientStore'
 import { usePlayerStore } from 'state/playerClientStore'

@@ -1,5 +1,5 @@
 import { hostActionName, type Slice } from 'utils/zustand'
-import create from 'zustand'
+import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
 type HostStore = HostStateSlice & HostActionSlice

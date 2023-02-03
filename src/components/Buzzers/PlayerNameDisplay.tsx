@@ -1,5 +1,5 @@
 import { ActionIcon, Button, Group, Modal, Stack, Text } from '@mantine/core'
-import { IconTrash } from '@tabler/icons'
+import { IconTrash } from '@tabler/icons-react'
 import { type Dispatch, type SetStateAction, useState, type FC } from 'react'
 import { useHostStore } from 'state/hostClientStore'
 import { trpc } from 'utils/trpc'

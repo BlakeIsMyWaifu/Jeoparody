@@ -1,6 +1,6 @@
 import { ActionIcon, NumberInput } from '@mantine/core'
 import { useInputState } from '@mantine/hooks'
-import { IconUpload } from '@tabler/icons'
+import { IconUpload } from '@tabler/icons-react'
 import { type FC } from 'react'
 import { trpc } from 'utils/trpc'
 

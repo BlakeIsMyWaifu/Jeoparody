@@ -1,5 +1,5 @@
 import { type CompleteQuestionSafe } from 'server/trpc/state/boardServerStore'
-import create from 'zustand'
+import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
 import { boardActionName, type Slice } from 'utils/zustand'

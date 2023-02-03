@@ -1,5 +1,5 @@
 import { arrayToObject } from 'utils/arrayToObject'
-import create from 'zustand'
+import { create } from 'zustand'
 
 import { eventEmitter } from '../router/_app'
 
