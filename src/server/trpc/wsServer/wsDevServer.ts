@@ -4,9 +4,9 @@ import { Server } from 'ws'
 import { createContext } from '../context'
 import { appRouter } from '../router/_app'
 
-const wss = new Server({
-	port: 3001
-})
+const port = parseInt(process.env.PORT || '3001', 10)
+
+const wss = new Server({ port })
 
 const handler = applyWSSHandler({ wss, router: appRouter, createContext })
 
@@ -17,7 +17,7 @@ wss.on('connection', ws => {
 	})
 })
 
-console.log('✅ WebSocket Server listening on ws://localhost:3001')
+console.log(`✅ WebSocket Server listening on wss://localhost:${port}`)
 
 process.on('SIGTERM', () => {
 	console.log('SIGTERM')

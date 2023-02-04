@@ -2,7 +2,7 @@ import { applyWSSHandler } from '@trpc/server/adapters/ws'
 import next from 'next'
 import http from 'node:http'
 import { parse } from 'node:url'
-import ws from 'ws'
+import { Server } from 'ws'
 
 import { createContext } from '../context'
 import { appRouter } from '../router/_app'
@@ -27,7 +27,7 @@ app.prepare().then(() => {
 		handle(req, res, parsedUrl)
 	})
 
-	const wss = new ws.Server({ server })
+	const wss = new Server({ server })
 
 	const handler = applyWSSHandler({ wss, router: appRouter, createContext })
 

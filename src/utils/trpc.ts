@@ -11,10 +11,12 @@ const { publicRuntimeConfig } = getConfig()
 
 const { APP_URL, WS_URL } = publicRuntimeConfig
 
+const isDev = process.env.NODE_ENV !== 'production'
+
 function getEndingLink(ctx: NextPageContext | undefined): TRPCLink<AnyRouter> {
 	if (typeof window === 'undefined') {
 		return httpBatchLink({
-			url: `${APP_URL}/api/trpc`,
+			url: (isDev ? 'http://localhost:3000' : APP_URL) + '/api/trpc',
 			headers() {
 				if (ctx?.req) {
 					return {
@@ -39,7 +41,7 @@ export const trpc = createTRPCNext<AppRouter>({
 		return {
 			links: [
 				loggerLink({
-					enabled: opts => (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') || (opts.direction === 'down' && opts.result instanceof Error)
+					enabled: opts => (isDev && typeof window !== 'undefined') || (opts.direction === 'down' && opts.result instanceof Error)
 				}),
 				getEndingLink(ctx)
 			],
