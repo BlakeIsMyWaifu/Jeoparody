@@ -126,6 +126,7 @@ boardStore.subscribe(state => state.dailyDouble, dailyDouble => {
 
 boardStore.subscribe(state => state.dailyDoubleWager, dailyDoubleWager => {
 	console.log({ dailyDoubleWager })
+	eventEmitter.emit('updateWager')
 })
 
 boardStore.subscribe(state => state.boardScale, boardScale => {
